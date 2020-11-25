@@ -1,0 +1,1058 @@
+definitions:
+  app.Pager:
+    properties:
+      page:
+        description: 页码
+        type: integer
+      page_size:
+        description: 每页数量
+        type: integer
+      total_rows:
+        description: 总行数
+        type: integer
+    type: object
+  errcode.Error:
+    properties:
+      code:
+        type: integer
+      details:
+        items:
+          type: string
+        type: array
+      msg:
+        type: string
+    type: object
+  model.BedtimeStory:
+    properties:
+      author:
+        type: string
+      created_by:
+        type: string
+      created_on:
+        type: string
+      deleted_on:
+        type: string
+      id:
+        type: integer
+      is_del:
+        type: integer
+      modified_by:
+        type: string
+      modified_on:
+        type: string
+      state:
+        type: integer
+      story:
+        type: string
+    type: object
+  model.BedtimeStorySwagger:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.BedtimeStory'
+        type: array
+      pager:
+        $ref: '#/definitions/app.Pager'
+        type: object
+    type: object
+  model.StoryTag:
+    properties:
+      created_by:
+        type: string
+      created_on:
+        type: string
+      deleted_on:
+        type: string
+      id:
+        type: integer
+      is_del:
+        type: integer
+      modified_by:
+        type: string
+      modified_on:
+        type: string
+      name:
+        type: string
+      state:
+        type: integer
+    type: object
+  model.TagSwagger:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.StoryTag'
+        type: array
+      pager:
+        $ref: '#/definitions/app.Pager'
+        type: object
+    type: object
+  service.Order:
+    properties:
+      id:
+        type: integer
+      product_id:
+        type: integer
+      state:
+        type: integer
+      user_id:
+        type: string
+    type: object
+  service.Product:
+    properties:
+      ProductImage:
+        type: string
+      ProductName:
+        type: string
+      ProductNum:
+        type: integer
+      ProductUrl:
+        type: string
+      id:
+        type: integer
+    type: object
+  service.User:
+    properties:
+      id:
+        type: string
+      nick_name:
+        type: string
+      user_name:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: 超级工具合集
+  license: {}
+  title: superTools
+  version: "1.0"
+paths:
+  /api/v1/bedtime/stories:
+    get:
+      parameters:
+      - description: 标签ID
+        in: query
+        name: tag_id
+        type: integer
+      - description: 状态
+        in: query
+        name: state
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.BedtimeStorySwagger'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取多个故事
+      tags:
+      - 睡前故事
+    post:
+      parameters:
+      - description: 标签ID
+        in: body
+        name: tag_id
+        required: true
+        schema:
+          type: string
+      - description: 故事内容
+        in: body
+        name: content
+        required: true
+        schema:
+          type: string
+      - description: 作者
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: 创建者
+        in: body
+        name: created_by
+        required: true
+        schema:
+          type: integer
+      - description: 状态
+        in: body
+        name: state
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.BedtimeStory'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 创建故事
+      tags:
+      - 睡前故事
+  /api/v1/bedtime/stories/{id}:
+    delete:
+      parameters:
+      - description: 故事ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除故事
+      tags:
+      - 睡前故事
+    get:
+      parameters:
+      - description: 故事ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.BedtimeStory'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取单个故事
+      tags:
+      - 睡前故事
+    put:
+      parameters:
+      - description: 标签ID
+        in: body
+        name: tag_id
+        schema:
+          type: string
+      - description: 故事内容
+        in: body
+        name: content
+        schema:
+          type: string
+      - description: 修改者
+        in: body
+        name: modified_by
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.BedtimeStory'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新故事
+      tags:
+      - 睡前故事
+  /api/v1/bedtime/stories_only/{id}:
+    get:
+      parameters:
+      - description: 故事ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.BedtimeStory'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 仅获得单个故事的内容和作者
+      tags:
+      - 睡前故事
+  /api/v1/mall/all_orders:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Order'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取所有订单
+      tags:
+      - mall
+  /api/v1/mall/all_orders_user:
+    get:
+      parameters:
+      - description: 用户id
+        in: query
+        name: user_id
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Order'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取用户所有订单
+      tags:
+      - mall
+  /api/v1/mall/all_product:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Product'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取所有商品
+      tags:
+      - mall
+  /api/v1/mall/orders:
+    get:
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Order'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取订单列表
+      tags:
+      - mall
+    post:
+      parameters:
+      - description: 用户名
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 昵称
+        in: body
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: userID
+          schema:
+            $ref: '#/definitions/string'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 用户注册
+      tags:
+      - user
+    put:
+      parameters:
+      - description: 用户id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 昵称
+        in: body
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/string'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新用户信息
+      tags:
+      - user
+  /api/v1/mall/orders/{id}:
+    delete:
+      parameters:
+      - description: 订单ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除订单
+      tags:
+      - mall
+    get:
+      parameters:
+      - description: 订单ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Order'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取单个订单
+      tags:
+      - mall
+  /api/v1/mall/orders_user:
+    get:
+      parameters:
+      - description: 用户id
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Order'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取用户订单列表
+      tags:
+      - mall
+  /api/v1/mall/products:
+    get:
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Product'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取商品列表
+      tags:
+      - mall
+    post:
+      parameters:
+      - description: 商品ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - description: 商品名称
+        in: body
+        name: product_name
+        required: true
+        schema:
+          type: string
+      - description: 商品数量
+        in: body
+        name: product_num
+        required: true
+        schema:
+          type: integer
+      - description: 商品图像
+        in: body
+        name: product_image
+        required: true
+        schema:
+          type: string
+      - description: 商品链接
+        in: body
+        name: product_url
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "1"
+          schema:
+            $ref: '#/definitions/int'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 新增商品
+      tags:
+      - mall
+    put:
+      parameters:
+      - description: 商品ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - description: 商品名称
+        in: body
+        name: product_name
+        required: true
+        schema:
+          type: string
+      - description: 商品数量
+        in: body
+        name: product_num
+        required: true
+        schema:
+          type: integer
+      - description: 商品图像
+        in: body
+        name: product_image
+        required: true
+        schema:
+          type: string
+      - description: 商品链接
+        in: body
+        name: product_url
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/string'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新商品
+      tags:
+      - mall
+  /api/v1/mall/products/{id}:
+    delete:
+      parameters:
+      - description: 商品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除商品
+      tags:
+      - mall
+    get:
+      parameters:
+      - description: 商品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Product'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取单个商品
+      tags:
+      - mall
+  /api/v1/morse:
+    get:
+      parameters:
+      - description: 要生成摩尔斯密码的字符串
+        in: query
+        name: str
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"data":{}}'
+          schema:
+            type: string
+      summary: 根据传递的字符串生成摩尔斯密码
+      tags:
+      - tool
+  /api/v1/qrcode:
+    get:
+      parameters:
+      - description: 要生成对应二维码的地址
+        in: query
+        name: str
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"data":{}}'
+          schema:
+            type: string
+      summary: 根据传递的字符串生成二维码字节的base64编码
+      tags:
+      - tool
+  /api/v1/tags:
+    get:
+      parameters:
+      - description: 标签名称
+        in: query
+        maxLength: 100
+        name: name
+        type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: query
+        name: state
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.TagSwagger'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取多个标签
+      tags:
+      - 睡前故事
+    post:
+      parameters:
+      - description: 标签名称
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: name
+        required: true
+        schema:
+          type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: body
+        name: state
+        schema:
+          type: integer
+      - description: 创建者
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: created_by
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.StoryTag'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 新增标签
+      tags:
+      - 睡前故事
+  /api/v1/tags/{id}:
+    delete:
+      parameters:
+      - description: 标签ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除标签
+      tags:
+      - 睡前故事
+    put:
+      parameters:
+      - description: 标签ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 标签名称
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: name
+        schema:
+          type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: body
+        name: state
+        schema:
+          type: integer
+      - description: 修改者
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: modified_by
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            items:
+              $ref: '#/definitions/model.StoryTag'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新标签
+      tags:
+      - 睡前故事
+  /api/v1/user/signin:
+    post:
+      parameters:
+      - description: 用户名
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.User'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 用户登录
+      tags:
+      - user
+  /auth:
+    get:
+      parameters:
+      - description: app_key
+        in: query
+        name: app_key
+        required: true
+        type: string
+      - description: app_secret
+        in: query
+        name: app_secret
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获得token
+  /upload/file:
+    post:
+      parameters:
+      - description: 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 文件类型
+        in: formData
+        name: type
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: file_url
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 用于文件上传
+swagger: "2.0"
