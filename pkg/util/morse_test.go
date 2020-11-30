@@ -1,7 +1,6 @@
 package util
 
 import (
-	"superTools-frontground-backend/pkg"
 	"testing"
 )
 
@@ -25,17 +24,17 @@ func TestGenerateMorse(t *testing.T) {
 	}{
 		{"aa11", ".-.-.----.----", nil},
 		{"11aa", ".----.----.-.-", nil},
-		{"", "", pkg.lengthError},
-		{"111,as", "", pkg.unsupportedError},
-		{"中文", "", pkg.unsupportedError},
+		{"", "", lengthError},
+		{"111,as", "", unsupportedError},
+		{"中文", "", unsupportedError},
 		{"1a12 ", ".----.-.----..---", nil},
-		{"   ", "", pkg.lengthError},
-		{"asdj$%#, 441", "", pkg.unsupportedError},
-		{"!@#$", "", pkg.unsupportedError},
+		{"   ", "", lengthError},
+		{"asdj$%#, 441", "", unsupportedError},
+		{"!@#$", "", unsupportedError},
 	}
 
 	for i, v := range morses {
-		code, e := pkg.GenerateMorse(v.str)
+		code, e := GenerateMorse(v.str)
 		if code != v.code {
 			t.Errorf("%d. %s morse code %s, wanted: %s, error= %v", i, v.str, code, v.code, e)
 		} else if e != v.err {
@@ -46,6 +45,6 @@ func TestGenerateMorse(t *testing.T) {
 
 func BenchmarkGenerateMorse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, _ = pkg.GenerateMorse("asasd12454")
+		_, _ = GenerateMorse("asasd12454")
 	}
 }

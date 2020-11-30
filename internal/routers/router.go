@@ -60,16 +60,11 @@ func NewRouter() *gin.Engine {
 	r.POST("/upload/file", upload.UploadFile)
 	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
 
-	RegisterController(r, HEALTH, global.DBEngine)
-	RegisterController(r, USER, global.DBEngine)
-	RegisterController(r, BEDTIME, global.DBEngine)
-	RegisterController(r, PRODUCT, global.DBEngine)
-	RegisterController(r, ORDER, global.DBEngine)
-
 	tool := r.Group("api/v1")
 	{
 		tool.GET("/morse", tools.GetMorse)
 		tool.GET("/qrcode", tools.GetQRcode)
+		tool.GET("/rgb2hex", tools.RgbToHex)
 	}
 
 	return r
