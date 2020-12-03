@@ -2,6 +2,10 @@ package service
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"superTools-frontground-backend/internal/model"
+	"text/template"
 
 	"superTools-frontground-backend/internal/dao"
 	"superTools-frontground-backend/pkg/app"
@@ -12,6 +16,11 @@ import (
 * @Date: 2020-11-18 15:40
 * @Description:
 **/
+var (
+	htmlOutPath = "/Users/super/develop/superTools-frontground-backend/web/htmlProductShow/" //生成的html文件保存位置
+	templatePath = "/Users/super/develop/superTools-frontground-backend/web/views/template/"//静态文件模板目录
+)
+
 type ProductRequest struct {
 	ID int64 `form:"id" binding:"required,gte=1"`
 }
@@ -144,4 +153,52 @@ func (p *ProductService) UpdateProduct(param *UpdateProductRequest) error {
 		return err
 	}
 	return nil
+}
+
+//用于实现页面静态化
+func (p *ProductService) GetGenerateHtml(param *ProductRequest) error{
+	//1.获取模版
+	contenstTmp, err := template.ParseFiles(filepath.Join(templatePath, "product.html"))
+	if err != nil {
+		return err
+	}
+	//2.获取html生成路径
+	fileName := filepath.Join(htmlOutPath, "htmlProduct.html")
+
+	//3.获取模版渲染数据
+	product, err := p.productDao.SelectByKey(param.ID)
+	if err != nil {
+		return err
+	}
+	//4.生成静态文件
+	return generateStaticHtml(contenstTmp, fileName, product)
+
+}
+
+//生成html静态文件
+func generateStaticHtml(template *template.Template, fileName string, product *model.Product) error {
+	//1.判断静态文件是否存在
+	if exist(fileName) {
+		err := os.Remove(fileName)
+		if err != nil {
+			return err
+		}
+	}
+	//2.生成静态文件
+	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	err = template.Execute(file, &product)
+	if err != nil{
+		return err
+	}
+	return nil
+}
+
+//判断文件是否存在
+func exist(fileName string) bool {
+	_, err := os.Stat(fileName)
+	return err == nil || os.IsExist(err)
 }
