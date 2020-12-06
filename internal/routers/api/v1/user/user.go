@@ -33,7 +33,7 @@ func NewUserController(userService service.IUserService) UserController {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/user/signin [post]
 func (u UserController) SignIn(c *gin.Context) {
-	//todo:cookie与session设置
+	//获取表单提交的数据
 	param := service.UserSignInRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
@@ -43,12 +43,15 @@ func (u UserController) SignIn(c *gin.Context) {
 		return
 	}
 
+	//验证用户合法性
 	user, err := u.UserService.SignIn(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.SignIn err: %v", err)
 		response.ToErrorResponse(errcode.ErrorUserSignInFail)
 		return
 	}
+	//将用户ID写入cookie中，使用加密防止被篡改
+	c.SetCookie("user_id", user.ID, 10, "/","localhost", false, true)
 	response.ToResponse(user)
 	return
 }
