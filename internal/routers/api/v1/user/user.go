@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
+	"superTools-frontground-backend/pkg/util"
 
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
@@ -51,7 +52,15 @@ func (u UserController) SignIn(c *gin.Context) {
 		return
 	}
 	//将用户ID写入cookie中，使用加密防止被篡改
-	c.SetCookie("user_id", user.ID, 10, "/","localhost", false, true)
+	c.SetCookie("uid", user.ID, 10, "/","localhost", false, true)
+	uidByte := []byte(user.ID)
+	uidString, err := util.EnPwdCode(uidByte)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.SignIn cookie err: %v", err)
+		response.ToErrorResponse(errcode.ErrorUserCookieFail)
+		return
+	}
+	c.SetCookie("signed", uidString, 10, "/","localhost", false, true)
 	response.ToResponse(user)
 	return
 }
