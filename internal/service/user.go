@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"golang.org/x/crypto/bcrypt"
-	
+
 	"superTools-frontground-backend/internal/dao"
 	"superTools-frontground-backend/pkg/idGenerator"
 )
@@ -14,8 +14,9 @@ import (
 * @Description:
 **/
 type UserSignInRequest struct {
-	UserName string `form:"user_name" binding:"required,min=2,max=4294967295"`
-	Password string `form:"password" binding:"required,min=2,max=4294967295"`
+	UserName  string `form:"user_name" binding:"required,min=2,max=4294967295"`
+	Password  string `form:"password" binding:"required,min=2,max=4294967295"`
+	IPAddress string `form:"ip_address" binding:"required,min=7, max=15"`
 }
 
 type UserRegisterRequest struct {
@@ -36,6 +37,12 @@ type User struct {
 	NickName     string `json:"nick_name"`
 	UserName     string `json:"user_name"`
 	HashPassword string `json:"-"`
+}
+
+type LoginUser struct {
+	ID        string `json:"id"`
+	UserName  string `json:"user_name"`
+	IPAddress string `json:"ip_address"`
 }
 
 type IUserService interface {

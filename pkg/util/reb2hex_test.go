@@ -19,9 +19,8 @@ func TestRgbToHex(t *testing.T) {
 								}`))
 }
 
-
 func BenchmarkRgbToHex(b *testing.B) {
-	for i := 0; i<b.N; i++{
+	for i := 0; i < b.N; i++ {
 		_, _ = RgbToHex(`{
 								"red": 255,
 								"green": 255,

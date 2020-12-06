@@ -17,8 +17,8 @@ import (
 * @Description:
 **/
 var (
-	htmlOutPath = "/Users/super/develop/superTools-frontground-backend/web/htmlProductShow/" //生成的html文件保存位置
-	templatePath = "/Users/super/develop/superTools-frontground-backend/web/views/template/"//静态文件模板目录
+	htmlOutPath  = "/Users/super/develop/superTools-frontground-backend/web/htmlProductShow/" //生成的html文件保存位置
+	templatePath = "/Users/super/develop/superTools-frontground-backend/web/views/template/"  //静态文件模板目录
 )
 
 type ProductRequest struct {
@@ -156,7 +156,7 @@ func (p *ProductService) UpdateProduct(param *UpdateProductRequest) error {
 }
 
 //用于实现页面静态化
-func (p *ProductService) GetGenerateHtml(param *ProductRequest) error{
+func (p *ProductService) GetGenerateHtml(param *ProductRequest) error {
 	//1.获取模版
 	contenstTmp, err := template.ParseFiles(filepath.Join(templatePath, "product.html"))
 	if err != nil {
@@ -191,7 +191,7 @@ func generateStaticHtml(template *template.Template, fileName string, product *m
 	}
 	defer file.Close()
 	err = template.Execute(file, &product)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	return nil

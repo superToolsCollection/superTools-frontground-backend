@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	
+
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/app"

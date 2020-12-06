@@ -16,8 +16,6 @@ import (
 * @Description:
 **/
 
-
-
 type ProductController struct {
 	ProductService service.IProductService
 }

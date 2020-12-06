@@ -52,15 +52,26 @@ func (u UserController) SignIn(c *gin.Context) {
 		return
 	}
 	//将用户ID写入cookie中，使用加密防止被篡改
-	c.SetCookie("uid", user.ID, 10, "/","localhost", false, true)
-	uidByte := []byte(user.ID)
-	uidString, err := util.EnPwdCode(uidByte)
+	loginUser := service.LoginUser{
+		ID:user.ID,
+		UserName:user.UserName,
+		IPAddress:param.IPAddress,
+	}
+	loginUserJson, err := util.EncodeToJson(loginUser)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.SignIn struct to json err: %v", err)
+		response.ToErrorResponse(errcode.ErrorUserSignInFail)
+		return
+	}
+	c.SetCookie("uid", user.ID, 10, "/", "localhost", false, true)
+	userByte := []byte(loginUserJson)
+	uidString, err := util.EnPwdCode(userByte)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.SignIn cookie err: %v", err)
 		response.ToErrorResponse(errcode.ErrorUserCookieFail)
 		return
 	}
-	c.SetCookie("signed", uidString, 10, "/","localhost", false, true)
+	c.SetCookie("signed", uidString, 10, "/", "localhost", false, true)
 	response.ToResponse(user)
 	return
 }
