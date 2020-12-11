@@ -7,12 +7,13 @@ package errcode
 **/
 
 var (
-	ErrorGetProductFail     = NewError(20040001, "获取单个商品失败")
-	ErrorGetAllProductFail  = NewError(20040002, "获取全部商品失败")
-	ErrorGetProductListFail = NewError(20040003, "获取多个商品失败")
-	ErrorInsertProductFail  = NewError(20040004, "插入商品失败")
-	ErrorUpdateProductFail  = NewError(20040005, "更新商品失败")
-	ErrorDeleteProductFail  = NewError(20040006, "删除商品失败")
+	ErrorGetProductFail      = NewError(20040001, "获取单个商品失败")
+	ErrorGetAllProductFail   = NewError(20040002, "获取全部商品失败")
+	ErrorGetProductListFail  = NewError(20040003, "获取多个商品失败")
+	ErrorInsertProductFail   = NewError(20040004, "插入商品失败")
+	ErrorUpdateProductFail   = NewError(20040005, "更新商品失败")
+	ErrorDeleteProductFail   = NewError(20040006, "删除商品失败")
+	ErrorGetGenerateHtmlFail = NewError(20040007, "获取商品静态文件失败")
 
 	ErrorGetOrderFail             = NewError(20050001, "获取单个订单失败")
 	ErrorGetAllOrderFail          = NewError(20050002, "获取全部订单失败")

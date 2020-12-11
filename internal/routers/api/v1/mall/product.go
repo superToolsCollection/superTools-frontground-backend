@@ -184,3 +184,31 @@ func (p ProductController) Delete(c *gin.Context) {
 	response.ToResponse("success")
 	return
 }
+
+// @Summary 获取静态文件
+// @Tags mall
+// @Produce json
+// @Param id path int true "商品ID"
+// @Success 200 {string} string "success"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/mall/GetGenerateHtml [get]
+func (p ProductController) GetGenerateHtml(c *gin.Context) {
+	param := service.ProductRequest{}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+
+	result, err := p.ProductService.GetProductByID(param.ID)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.GetGenerateHtml err: %v", result)
+		response.ToErrorResponse(errcode.ErrorGetGenerateHtmlFail)
+		return
+	}
+	response.ToResponse("success")
+	return
+}
