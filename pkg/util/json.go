@@ -10,7 +10,7 @@ import "encoding/json"
 
 func EncodeToJson(object interface{}) (string, error) {
 	encodeBytes, err := json.Marshal(object)
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	return string(encodeBytes), nil
@@ -19,7 +19,7 @@ func EncodeToJson(object interface{}) (string, error) {
 func DecodeToStruct(input string) (interface{}, error) {
 	var result interface{}
 	err := json.Unmarshal([]byte(input), &result)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return result, nil

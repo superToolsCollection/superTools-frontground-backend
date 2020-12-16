@@ -55,6 +55,7 @@ func NewRouter() *gin.Engine {
 
 	//获取token
 	r.GET("/auth", api.GetAuth)
+	RegisterController(r, USER, global.DBEngine)
 
 	upload := api.NewUpload()
 	r.POST("/upload/file", upload.UploadFile)
@@ -123,7 +124,7 @@ func registerUser(r *gin.Engine, db *gorm.DB) {
 	userService := service.NewUserService(userManager)
 	userController := user.NewUserController(userService)
 
-	userGroup := r.Group("/api/v1/user/")
+	userGroup := r.Group("/user")
 	{
 		userGroup.POST("/signin", userController.SignIn)
 		userGroup.POST("/register", userController.Register)

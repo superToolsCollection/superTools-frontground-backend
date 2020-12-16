@@ -53,9 +53,9 @@ func (u UserController) SignIn(c *gin.Context) {
 	}
 	//将用户ID写入cookie中，使用加密防止被篡改
 	loginUser := service.LoginUser{
-		ID:user.ID,
-		UserName:user.UserName,
-		IPAddress:param.IPAddress,
+		ID:        user.ID,
+		UserName:  user.UserName,
+		IPAddress: param.IPAddress,
 	}
 	loginUserJson, err := util.EncodeToJson(loginUser)
 	if err != nil {
@@ -63,7 +63,7 @@ func (u UserController) SignIn(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorUserSignInFail)
 		return
 	}
-	c.SetCookie("uid", user.ID, 10, "/", "localhost", false, true)
+	c.SetCookie("loginUserJson", user.ID, 10, "/", "localhost", false, true)
 	userByte := []byte(loginUserJson)
 	uidString, err := util.EnPwdCode(userByte)
 	if err != nil {
@@ -71,7 +71,7 @@ func (u UserController) SignIn(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorUserCookieFail)
 		return
 	}
-	c.SetCookie("signed", uidString, 10, "/", "localhost", false, true)
+	c.SetCookie("sign", uidString, 10, "/", "localhost", false, true)
 	response.ToResponse(user)
 	return
 }

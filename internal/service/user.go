@@ -16,7 +16,7 @@ import (
 type UserSignInRequest struct {
 	UserName  string `form:"user_name" binding:"required,min=2,max=4294967295"`
 	Password  string `form:"password" binding:"required,min=2,max=4294967295"`
-	IPAddress string `form:"ip_address" binding:"required,min=7, max=15"`
+	IPAddress string `form:"ip_address" binding:"required,min=7,max=15"`
 }
 
 type UserRegisterRequest struct {
