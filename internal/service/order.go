@@ -17,10 +17,7 @@ type OrderRequest struct {
 }
 
 type InsertOrderRequest struct {
-	ID        int64  `form:"id" binding:"required,gte=1"`
-	UserID    string `form:"user_id" binding:"required,min=2,max=4294967295"`
-	ProductID int64  `form:"product_id" binding:"required,gte=1"`
-	State     int    `form:"state" binding:"required,gte=1"`
+	ProductID int64 `form:"product_id" binding:"required,gte=1"`
 }
 
 type UpdateOrderRequest struct {

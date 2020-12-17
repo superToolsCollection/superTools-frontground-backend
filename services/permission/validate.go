@@ -21,17 +21,17 @@ import (
 var port = 8081
 var hashConsistent *consistentHash.Consistent
 
-type  AccessControl struct {
+type AccessControl struct {
 	sourcesArray map[string]interface{}
 	sync.RWMutex
 }
 
 var accessControl = &AccessControl{
-	sourcesArray:make(map[string]interface{}),
+	sourcesArray: make(map[string]interface{}),
 }
 
 //获取用户设置的数据
-func (m *AccessControl) GetRecord(uid string)interface{}{
+func (m *AccessControl) GetRecord(uid string) interface{} {
 	m.RWMutex.RLock()
 	defer m.RWMutex.RUnlock()
 	data := m.sourcesArray[uid]
@@ -39,20 +39,20 @@ func (m *AccessControl) GetRecord(uid string)interface{}{
 }
 
 //用户设置数据
-func (m *AccessControl) SetRecord(uid string){
+func (m *AccessControl) SetRecord(uid string) {
 	m.RWMutex.Lock()
 	//todo
 	m.sourcesArray[uid] = "hello"
 	m.RWMutex.Unlock()
 }
 
-func (m *AccessControl) GetDistributedRight(req *http.Request)bool{
+func (m *AccessControl) GetDistributedRight(req *http.Request) bool {
 	uid, err := req.Cookie("loginUserJson")
-	if err != nil{
+	if err != nil {
 		return false
 	}
 	hostRequest, err := hashConsistent.Get(uid.Value)
-	if err != nil{
+	if err != nil {
 		return false
 	}
 	//判断是否为本机
@@ -127,9 +127,9 @@ func GetDataFromRemote(host string, request *http.Request) bool {
 func main() {
 	//负载均衡器设置，采用一致Hash算法
 	hashConsistent = consistentHash.NewConsistent()
-    //通过一致性Hash算法添加节点
-    for _, v := range configs.HOST_ARRAY{
-    	hashConsistent.Add(v)
+	//通过一致性Hash算法添加节点
+	for _, v := range configs.HOST_ARRAY {
+		hashConsistent.Add(v)
 	}
 	//创建过滤器
 	filter := common.NewFilter()

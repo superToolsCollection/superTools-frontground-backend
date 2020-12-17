@@ -14,6 +14,6 @@ import (
 var (
 	DBEngine    *gorm.DB
 	RedisEngine *redis.Pool
-	//todo: xiugai rabbitmq
+	//todo: 修改 rabbitmq
 	RabbitMQEngine *redis.Pool
 )

@@ -33,7 +33,7 @@ func (x units) Swap(i, j int) {
 }
 
 //当hash环上没有数据时，提示错误
-var errEmpty = errors.New("Hash 环没有数据")
+var errEmpty = errors.New("hash环没有数据")
 
 //创建结构体保存一致性hash信息
 type Consistent struct {

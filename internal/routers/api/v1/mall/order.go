@@ -1,7 +1,11 @@
 package mall
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"superTools-frontground-backend/internal/model"
+	"superTools-frontground-backend/pkg/util"
 
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
@@ -172,14 +176,27 @@ func (o OrderController) Insert(c *gin.Context) {
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
 	}
-
-	order, err := o.OrderService.InsertOrder(&param)
+	userInfoJson, err := c.Cookie("loginUserJson")
+	//todo:用户禁用cookie的解决方案
 	if err != nil {
 		global.Logger.Errorf(c, "svc.InsertOrder err: %v", err)
 		response.ToErrorResponse(errcode.ErrorInsertOrderFail)
 		return
 	}
-	response.ToResponse(order)
+	decodeStruct, err := util.DecodeToStruct(userInfoJson)
+	userInfo := decodeStruct.(service.LoginUser)
+
+	message := model.NewMessage(param.ProductID, userInfo.ID)
+	messageJson, err := json.Marshal(message)
+	if err != nil {
+		//todo:修改报错信息
+		global.Logger.Errorf(c, "svc.InsertOrder err: %v", err)
+		response.ToErrorResponse(errcode.ErrorInsertOrderFail)
+		return
+	}
+	//todo:将消息发送到消息队列
+	fmt.Println(messageJson)
+
 	return
 }
 
