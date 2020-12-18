@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"superTools-frontground-backend/pkg/mq"
 	"time"
 
 	"superTools-frontground-backend/global"
@@ -197,10 +198,9 @@ func setupCacheEngine() error {
 	return nil
 }
 
-//todo:添加rabbitmq初始化
 func setupRabbitMQEngine() error {
 	var err error
-	global.RedisEngine, err = cache.NewRedisEngine(global.CacheSetting)
+	global.RabbitMQEngine, err = mq.NewRabbitMQSimple("", global.RabbitMQSetting)
 	if err != nil {
 		return err
 	}

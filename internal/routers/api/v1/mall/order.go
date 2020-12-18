@@ -2,9 +2,9 @@ package mall
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"superTools-frontground-backend/internal/model"
+	"superTools-frontground-backend/pkg/mq"
 	"superTools-frontground-backend/pkg/util"
 
 	"superTools-frontground-backend/global"
@@ -194,8 +194,7 @@ func (o OrderController) Insert(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorInsertOrderFail)
 		return
 	}
-	//todo:将消息发送到消息队列
-	fmt.Println(messageJson)
+	mq.SendMessage(string(messageJson), global.RabbitMQEngine)
 
 	return
 }

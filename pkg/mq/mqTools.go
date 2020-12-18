@@ -14,13 +14,15 @@ import (
 **/
 
 //简单模式：step1 创建简单模式下的RabbitMQ实例
-func NewRabbitMQSimple(queueName string, rabbitMQSetting *setting.RabbitMQSettingS) *RabbitMQ {
+func NewRabbitMQSimple(queueName string, rabbitMQSetting *setting.RabbitMQSettingS) (*RabbitMQ, error) {
 	//simple模式下使用默认的exchange
 	return NewRabbitMQ(queueName, "", "", rabbitMQSetting)
 }
 
 // 简单模式：step2 创建简单模式下的生产者
 func (r *RabbitMQ) PublishSimple(message string) {
+	r.Lock()
+	defer r.Unlock()
 	//1. 申请队列，如果队列不存在则自动创建，如果存在则获取存在的队列
 	//保证队列存在，使消息发送到队列中
 	_, err := r.Channel.QueueDeclare(r.QueueName,
@@ -37,6 +39,7 @@ func (r *RabbitMQ) PublishSimple(message string) {
 	)
 	if err != nil {
 		global.Logger.Error(context.Background(), err)
+		return
 	}
 
 	//2. 发送消息到队列中
@@ -76,6 +79,7 @@ func (r *RabbitMQ) GetMsgs() <-chan amqp.Delivery {
 	)
 	if err != nil {
 		global.Logger.Error(context.Background(), err)
+		return nil
 	}
 
 	//接受消息
@@ -96,7 +100,7 @@ func (r *RabbitMQ) GetMsgs() <-chan amqp.Delivery {
 	)
 	if err != nil {
 		global.Logger.Error(context.Background(), err)
+		return nil
 	}
-
 	return msgs
 }

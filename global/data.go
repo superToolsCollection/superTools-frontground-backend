@@ -3,6 +3,7 @@ package global
 import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
+	"superTools-frontground-backend/pkg/mq"
 )
 
 /**
@@ -14,6 +15,5 @@ import (
 var (
 	DBEngine    *gorm.DB
 	RedisEngine *redis.Pool
-	//todo: 修改 rabbitmq
-	RabbitMQEngine *redis.Pool
+	RabbitMQEngine *mq.RabbitMQ
 )
