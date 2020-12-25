@@ -99,3 +99,22 @@ func (t ToolController) GetToolList(c *gin.Context) {
 	response.ToResponse(tools)
 	return
 }
+
+// @Summary 获取工具列表
+// @Tags tool
+// @Produce json
+// @Success 200 {object} service.Tool "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/tools/allTools [get]
+func (t ToolController) GetAllTools(c *gin.Context) {
+	response := app.NewResponse(c)
+	tools, err := t.ToolService.GetAllTools()
+	if err != nil {
+		global.Logger.Errorf(c, "svc.GetToolList err: %v", err)
+		response.ToErrorResponse(errcode.ErrorGetToolListFail)
+		return
+	}
+	response.ToResponse(tools)
+	return
+}

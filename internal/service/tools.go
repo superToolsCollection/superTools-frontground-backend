@@ -35,6 +35,7 @@ type IToolService interface {
 	GetToolByKey(param *GetToolByKeyRequest) (*Tool, error)
 	GetToolByName(param *GetToolByNameRequest) (*Tool, error)
 	GetToolList(pager *app.Pager) ([]*Tool, error)
+	GetAllTools() ([]*Tool, error)
 }
 
 type ToolService struct {
@@ -87,6 +88,29 @@ func (s *ToolService) GetToolByName(param *GetToolByNameRequest) (*Tool, error) 
 
 func (s *ToolService) GetToolList(pager *app.Pager) ([]*Tool, error) {
 	tools, err := s.toolDao.SelectList(pager.Page, pager.PageSize)
+	if err != nil {
+		return nil, err
+	}
+	var toolList []*Tool
+	for _, tool := range tools {
+		toolList = append(toolList, &Tool{
+			ID:          tool.ID,
+			Name:        tool.Name,
+			API:         tool.API,
+			APIDescribe: tool.APIDescribe,
+			CreatedBy:   tool.CreatedBy,
+			CreateOn:    tool.CreatedOn,
+			ModifiedBy:  tool.ModifiedBy,
+			ModifiedOn:  tool.ModifiedOn,
+			DeleteOn:    tool.DeletedOn,
+			State:       tool.State,
+		})
+	}
+	return toolList, nil
+}
+
+func (s *ToolService) GetAllTools()([]*Tool, error){
+	tools, err := s.toolDao.SelectAll()
 	if err != nil {
 		return nil, err
 	}

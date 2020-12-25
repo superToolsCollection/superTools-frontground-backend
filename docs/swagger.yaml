@@ -33,7 +33,7 @@ definitions:
       deleted_on:
         type: string
       id:
-        type: integer
+        type: string
       is_del:
         type: integer
       modified_by:
@@ -64,7 +64,7 @@ definitions:
       deleted_on:
         type: string
       id:
-        type: integer
+        type: string
       is_del:
         type: integer
       modified_by:
@@ -89,9 +89,9 @@ definitions:
   service.Order:
     properties:
       id:
-        type: integer
+        type: string
       product_id:
-        type: integer
+        type: string
       state:
         type: integer
       user_id:
@@ -108,6 +108,29 @@ definitions:
       ProductUrl:
         type: string
       id:
+        type: string
+    type: object
+  service.Tool:
+    properties:
+      api:
+        type: string
+      api_describe:
+        type: string
+      create_on:
+        type: string
+      created_by:
+        type: string
+      delete_on:
+        type: string
+      id:
+        type: string
+      modified_by:
+        type: string
+      modified_on:
+        type: string
+      name:
+        type: string
+      state:
         type: integer
     type: object
   service.User:
@@ -123,7 +146,7 @@ info:
   contact: {}
   description: 超级工具合集
   license: {}
-  title: superTools
+  title: superTools前端后台
   version: "1.0"
 paths:
   /api/v1/bedtime/stories:
@@ -325,6 +348,32 @@ paths:
       summary: 仅获得单个故事的内容和作者
       tags:
       - 睡前故事
+  /api/v1/mall/GetGenerateHtml:
+    get:
+      parameters:
+      - description: 商品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取静态文件
+      tags:
+      - mall
   /api/v1/mall/all_orders:
     get:
       produces:
@@ -801,6 +850,24 @@ paths:
       summary: 根据传递的字符串生成二维码字节的base64编码
       tags:
       - tool
+  /api/v1/rgb2hex:
+    get:
+      parameters:
+      - description: 要转换为hex的rgb字符串
+        in: query
+        name: str
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '#xxxxxx'
+          schema:
+            type: string
+      summary: 根据传递的字符串生成二维码字节的base64编码
+      tags:
+      - tool
   /api/v1/tags:
     get:
       parameters:
@@ -964,6 +1031,109 @@ paths:
       summary: 更新标签
       tags:
       - 睡前故事
+  /api/v1/tools/allTools:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Tool'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取工具列表
+      tags:
+      - tool
+  /api/v1/tools/getTool:
+    get:
+      parameters:
+      - description: 工具id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Tool'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 根据id获取工具
+      tags:
+      - tool
+  /api/v1/tools/getToolByName:
+    get:
+      parameters:
+      - description: 工具名称
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Tool'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 根据名称获取工具
+      tags:
+      - tool
+  /api/v1/tools/toolList:
+    get:
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/service.Tool'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取工具列表
+      tags:
+      - tool
   /api/v1/user/signin:
     post:
       parameters:

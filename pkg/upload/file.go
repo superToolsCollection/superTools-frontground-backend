@@ -58,9 +58,7 @@ func CheckContainExt(t FileType, name string) bool {
 				return true
 			}
 		}
-
 	}
-
 	return false
 }
 
@@ -73,7 +71,6 @@ func CheckMaxSize(t FileType, f multipart.File) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
