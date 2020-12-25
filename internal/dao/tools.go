@@ -28,9 +28,6 @@ type Tool struct {
 }
 
 type ITool interface {
-	Insert(tool *Tool) (string, error)
-	Delete(id string) error
-	Update(tool *Tool) error
 	SelectByKey(id string) (*model.Tool, error)
 	SelectAll() ([]*model.Tool, error)
 	SelectByName(name string) (*model.Tool, error)
@@ -40,51 +37,6 @@ type ITool interface {
 type ToolManager struct {
 	table string
 	conn  *gorm.DB
-}
-
-func (m *ToolManager) Insert(tool *Tool) (string, error) {
-	t := &model.Tool{
-		Model: &model.Model{
-			ID:        tool.ID,
-			CreatedBy: tool.CreatedBy,
-		},
-		APIDescribe: tool.APIDescribe,
-		Name:        tool.Name,
-		State:       tool.State,
-		API:         tool.API,
-	}
-	result := m.conn.Create(t)
-	if result.RowsAffected == int64(0) {
-		return "", errors.New(fmt.Sprintf("dao.insertTool err: %v", result.Error.Error()))
-	}
-	return t.ID, nil
-}
-
-func (m *ToolManager) Delete(id string) error {
-	result := m.conn.Where("id=?", id).Delete(model.Tool{})
-	if result.RowsAffected == int64(0) {
-		return errors.New(fmt.Sprintf("delete error: %v", result.Error.Error()))
-	}
-	return nil
-}
-
-func (m *ToolManager) Update(tool *Tool) error {
-	t := &model.Tool{
-		Model: &model.Model{
-			ID:         tool.ID,
-			ModifiedBy: tool.ModifiedBy,
-		},
-		APIDescribe: tool.APIDescribe,
-		Name:        tool.Name,
-		State:       tool.State,
-		API:         tool.API,
-	}
-	fmt.Println("update", t.Name, t.State, t.ID)
-	result := m.conn.Model(t).Where("id=?", t.ID).Updates(t)
-	if result.Error != nil {
-		return errors.New(fmt.Sprintf("update error: %v", result.Error.Error()))
-	}
-	return nil
 }
 
 func (m *ToolManager) SelectByKey(id string) (*model.Tool, error) {

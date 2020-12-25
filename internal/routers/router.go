@@ -60,6 +60,7 @@ func NewRouter() *gin.Engine {
 
 	RegisterController(r, HEALTH, global.DBEngine)
 	RegisterController(r, USER, global.DBEngine)
+	RegisterController(r, TOOLS, global.DBEngine)
 
 	upload := api.NewUpload()
 	r.POST("/upload/file", upload.UploadFile)
@@ -79,6 +80,8 @@ func RegisterController(r *gin.Engine, name string, db *gorm.DB) {
 	switch name {
 	case PRODUCT:
 		registerProduct(r, db)
+	case TOOLS:
+		registerTools(r, db)
 	case ORDER:
 		registerOrder(r, db)
 	case USER:
@@ -167,5 +170,18 @@ func registerProduct(r *gin.Engine, db *gorm.DB) {
 		g.POST("/products", productController.Insert)
 		g.DELETE("/products", productController.Delete)
 		g.PUT("/products", productController.Update)
+	}
+}
+
+func registerTools(r *gin.Engine, db *gorm.DB) {
+	toolproductManager := dao.NewToolManager("tools", db)
+	toolService := service.NewToolService(toolproductManager)
+	toolController := tools.NewToolController(toolService)
+
+	g := r.Group("/tools")
+	{
+		g.GET("/getTool", toolController.GetToolByKey)
+		g.GET("/getToolByName", toolController.GetToolByName)
+		g.GET("/toolList", toolController.GetToolList)
 	}
 }

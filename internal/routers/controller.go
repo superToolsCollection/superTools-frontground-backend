@@ -8,6 +8,7 @@ package routers
 
 const (
 	PRODUCT = "products"
+	TOOLS   = "tools"
 	ORDER   = "orders"
 	USER    = "users"
 	BEDTIME = "bedtime"
