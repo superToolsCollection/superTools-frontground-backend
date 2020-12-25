@@ -18,7 +18,7 @@ func NewRabbitMQSimple(queueName string, rabbitMQSetting *setting.RabbitMQSettin
 }
 
 // 简单模式：step2 创建简单模式下的生产者
-func (r *RabbitMQ) PublishSimple(message string) error{
+func (r *RabbitMQ) PublishSimple(message string) error {
 	r.Lock()
 	defer r.Unlock()
 	//1. 申请队列，如果队列不存在则自动创建，如果存在则获取存在的队列
@@ -60,7 +60,7 @@ func (r *RabbitMQ) PublishSimple(message string) error{
 }
 
 // 简单模式：step3 创建简单模式下的消费者
-func (r *RabbitMQ) GetMsgs() (<-chan amqp.Delivery,  error) {
+func (r *RabbitMQ) GetMsgs() (<-chan amqp.Delivery, error) {
 	//1. 申请队列，如果队列不存在则自动创建，如果存在则获取存在的队列
 	//保证队列存在，使消息发送到队列中
 	_, err := r.Channel.QueueDeclare(r.QueueName,

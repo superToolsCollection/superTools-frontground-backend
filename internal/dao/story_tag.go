@@ -10,12 +10,12 @@ import (
 * @Description: 用于操作story_tag_map表
 **/
 
-func (d *Dao) GetStoryTagByAID(storyID uint32) (model.StoryTagMap, error) {
+func (d *Dao) GetStoryTagByAID(storyID string) (model.StoryTagMap, error) {
 	articleTag := model.StoryTagMap{StoryID: storyID}
 	return articleTag.GetByAID(d.engine)
 }
 
-func (d *Dao) GetStoryTagListByTID(tagID uint32) ([]*model.StoryTagMap, error) {
+func (d *Dao) GetStoryTagListByTID(tagID string) ([]*model.StoryTagMap, error) {
 	articleTag := model.StoryTagMap{TagID: tagID}
 	return articleTag.ListByTID(d.engine)
 }
@@ -25,7 +25,7 @@ func (d *Dao) GetStoryTagListByAIDs(articleIDs []uint32) ([]*model.StoryTagMap, 
 	return articleTag.ListByAIDs(d.engine, articleIDs)
 }
 
-func (d *Dao) CreateStoryTag(storyID, tagID uint32, createdBy string) error {
+func (d *Dao) CreateStoryTag(storyID, tagID string, createdBy string) error {
 	articleTag := model.StoryTagMap{
 		Model: &model.Model{
 			CreatedBy: createdBy,
@@ -36,7 +36,7 @@ func (d *Dao) CreateStoryTag(storyID, tagID uint32, createdBy string) error {
 	return articleTag.Create(d.engine)
 }
 
-func (d *Dao) UpdateStoryTag(storyID, tagID uint32, modifiedBy string) error {
+func (d *Dao) UpdateStoryTag(storyID, tagID string, modifiedBy string) error {
 	articleTag := model.StoryTagMap{StoryID: storyID}
 	values := map[string]interface{}{
 		"story_id":    storyID,
@@ -46,7 +46,7 @@ func (d *Dao) UpdateStoryTag(storyID, tagID uint32, modifiedBy string) error {
 	return articleTag.UpdateOne(d.engine, values)
 }
 
-func (d *Dao) DeleteStoryTag(storyID uint32) error {
+func (d *Dao) DeleteStoryTag(storyID string) error {
 	articleTag := model.StoryTagMap{StoryID: storyID}
 	return articleTag.DeleteOne(d.engine)
 }

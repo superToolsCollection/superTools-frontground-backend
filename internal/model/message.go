@@ -7,11 +7,11 @@ package model
 **/
 
 type Message struct {
-	ProductId int64
+	ProductId string
 	UserID    string
 }
 
-func NewMessage(productId int64, userId string) *Message {
+func NewMessage(productId string, userId string) *Message {
 	return &Message{
 		ProductId: productId,
 		UserID:    userId,

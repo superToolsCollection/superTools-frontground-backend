@@ -22,7 +22,7 @@ func (svc *Service) CheckAuth(param *AuthRequest) error {
 		return err
 	}
 
-	if auth.ID > 0 {
+	if auth.ID == "" {
 		return nil
 	}
 

@@ -13,8 +13,8 @@ import (
 
 type StoryTagMap struct {
 	*Model
-	StoryID uint32 `gorm:"column:story_id" json:"story_id"`
-	TagID   uint32 `gorm:"column:tag_id" json:"tag_id"`
+	StoryID string `gorm:"column:story_id" json:"story_id"`
+	TagID   string `gorm:"column:tag_id" json:"tag_id"`
 }
 
 // TableName sets the insert table name for this struct type

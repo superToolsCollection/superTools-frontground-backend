@@ -14,9 +14,9 @@ import (
 **/
 type IStory interface {
 	Insert(story *BedtimeStory) (int64, error)
-	Delete(int64) bool
+	Delete(string) bool
 	Update(story *BedtimeStory) error
-	SelectByKey(int64) (*BedtimeStory, error)
+	SelectByKey(string) (*BedtimeStory, error)
 	SelectAll() ([]*BedtimeStory, error)
 }
 
@@ -75,13 +75,13 @@ func (b BedtimeStory) Delete(db *gorm.DB) error {
 }
 
 type StoryRow struct {
-	StoryID uint32
-	TagID   uint32
+	StoryID string
+	TagID   string
 	TagName string
 	Story   string
 }
 
-func (b BedtimeStory) ListByTagID(db *gorm.DB, tagID uint32, pageOffset, pageSize int) ([]*StoryRow, error) {
+func (b BedtimeStory) ListByTagID(db *gorm.DB, tagID string, pageOffset, pageSize int) ([]*StoryRow, error) {
 	fields := []string{"st.id AS story_id", "st.story"}
 	fields = append(fields, []string{"t.id AS tag_id", "t.name AS tag_name"}...)
 
@@ -111,7 +111,7 @@ func (b BedtimeStory) ListByTagID(db *gorm.DB, tagID uint32, pageOffset, pageSiz
 	return articles, nil
 }
 
-func (b BedtimeStory) CountByTagID(db *gorm.DB, tagID uint32) (int, error) {
+func (b BedtimeStory) CountByTagID(db *gorm.DB, tagID string) (int, error) {
 	var count int
 	err := db.Table(StoryTag{}.TableName()+" AS st").
 		Joins("LEFT JOIN `"+StoryTagMap{}.TableName()+"` AS stm ON stm.tag_id = st.id").

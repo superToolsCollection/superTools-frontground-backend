@@ -10,7 +10,6 @@ import (
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/app"
-	"superTools-frontground-backend/pkg/convert"
 	"superTools-frontground-backend/pkg/errcode"
 )
 
@@ -137,7 +136,7 @@ func (o OrderController) GetOrderByUserID(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/orders/{id} [get]
 func (o OrderController) GetOrder(c *gin.Context) {
-	param := service.OrderRequest{ID: convert.StrTo(c.Param("id")).MustInt64()}
+	param := service.OrderRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
@@ -239,7 +238,7 @@ func (o OrderController) Update(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/orders/{id} [delete]
 func (o OrderController) Delete(c *gin.Context) {
-	param := service.DeleteOrderRequest{ID: convert.StrTo(c.Param("id")).MustInt64()}
+	param := service.DeleteOrderRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {

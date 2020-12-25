@@ -12,8 +12,8 @@ import (
 **/
 
 type Story struct {
-	ID         uint32 `json:"id"`
-	TagID      uint32 `json:"tag_id"`
+	ID         string `json:"id"`
+	TagID      string `json:"tag_id"`
 	Story      string `json:"story"`
 	Author     string `json:"author"`
 	CreatedBy  string `json:"created_by"`
@@ -45,27 +45,27 @@ func (d *Dao) UpdateStory(param *Story) error {
 	return story.Update(d.engine, values)
 }
 
-func (d *Dao) GetStory(id uint32, state uint8) (model.BedtimeStory, error) {
+func (d *Dao) GetStory(id string, state uint8) (model.BedtimeStory, error) {
 	story := model.BedtimeStory{Model: &model.Model{ID: id}, State: state}
 	return story.Get(d.engine)
 }
 
-func (d *Dao) GetStoryOnly(id uint32, state uint8) (model.BedtimeStory, error) {
+func (d *Dao) GetStoryOnly(id string, state uint8) (model.BedtimeStory, error) {
 	story := model.BedtimeStory{Model: &model.Model{ID: id}, State: state}
 	return story.Get(d.engine)
 }
 
-func (d *Dao) DeleteStory(id uint32) error {
+func (d *Dao) DeleteStory(id string) error {
 	story := model.BedtimeStory{Model: &model.Model{ID: id}}
 	return story.Delete(d.engine)
 }
 
-func (d *Dao) CountStoryListByTagID(id uint32, state uint8) (int, error) {
+func (d *Dao) CountStoryListByTagID(id string, state uint8) (int, error) {
 	story := model.BedtimeStory{State: state}
 	return story.CountByTagID(d.engine, id)
 }
 
-func (d *Dao) GetStoryListByTagID(id uint32, state uint8, page, pageSize int) ([]*model.StoryRow, error) {
+func (d *Dao) GetStoryListByTagID(id string, state uint8, page, pageSize int) ([]*model.StoryRow, error) {
 	story := model.BedtimeStory{State: state}
 	return story.ListByTagID(d.engine, id, app.GetPageOffset(page, pageSize), pageSize)
 }

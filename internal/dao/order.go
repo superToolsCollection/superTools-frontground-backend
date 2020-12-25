@@ -17,17 +17,17 @@ import (
 **/
 
 type Order struct {
-	ID        int64  `json:"id"`
+	ID        string `json:"id"`
 	UserID    string `json:"user_id"`
-	ProductID int64  `json:"product_id"`
+	ProductID string `json:"product_id"`
 	State     int    `json:"state"`
 }
 
 type IOrder interface {
 	Insert(order *Order) (int64, error)
-	Delete(id int64) bool
+	Delete(id string) bool
 	Update(order *Order) error
-	SelectByKey(id int64) (*model.Order, error)
+	SelectByKey(id string) (*model.Order, error)
 	SelectAll() ([]*model.Order, error)
 	SelectByUser(userID string) ([]*model.Order, error)
 	SelectAllWithInfo() ([]*OrderRow, error)
@@ -58,7 +58,7 @@ func (m *OrderManager) Insert(order *Order) (int64, error) {
 	return result.RowsAffected, nil
 }
 
-func (m *OrderManager) Delete(id int64) bool {
+func (m *OrderManager) Delete(id string) bool {
 	result := m.conn.Where("id = ?", id).Delete(model.Order{})
 	if result.RowsAffected == int64(0) {
 		return false
@@ -80,7 +80,7 @@ func (m *OrderManager) Update(order *Order) error {
 	return nil
 }
 
-func (m *OrderManager) SelectByKey(id int64) (*model.Order, error) {
+func (m *OrderManager) SelectByKey(id string) (*model.Order, error) {
 	order := &model.Order{}
 	result := m.conn.Where("id = ?", id).Find(order)
 	if result.RecordNotFound() {

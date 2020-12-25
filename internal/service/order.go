@@ -13,25 +13,25 @@ import (
 * @Description:
 **/
 type OrderRequest struct {
-	ID int64 `form:"id" binding:"required,gte=1"`
+	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
 type InsertOrderRequest struct {
-	ID        int64  `form:"id" binding:"required,gte=1"`
+	ID        string `form:"id" binding:"required,min=2,max=100"`
 	UserID    string `form:"user_id" binding:"required,min=2,max=4294967295"`
-	ProductID int64  `form:"product_id" binding:"required,gte=1"`
+	ProductID string `form:"product_id" binding:"required,min=2,max=100"`
 	State     int    `form:"state" binding:"required,gte=1"`
 }
 
 type UpdateOrderRequest struct {
-	ID        int64  `form:"id" binding:"required,gte=1"`
+	ID        string `form:"id" binding:"required,min=2,max=100"`
 	UserID    string `form:"user_id" binding:"required,min=2,max=4294967295"`
-	ProductID int64  `form:"product_id" binding:"required,gte=1"`
+	ProductID string `form:"product_id" binding:"required,min=2,max=100"`
 	State     int    `form:"state" binding:"required,gte=1"`
 }
 
 type DeleteOrderRequest struct {
-	ID int64 `form:"id" binding:"required,gte=1"`
+	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
 type GetOrderByUserIDRequest struct {
@@ -43,9 +43,9 @@ type GetOrderListByUserIDRequest struct {
 }
 
 type Order struct {
-	ID        int64  `json:"id"`
+	ID        string `json:"id"`
 	UserID    string `json:"user_id"`
-	ProductID int64  `json:"product_id"`
+	ProductID string `json:"product_id"`
 	State     int    `json:"state"`
 }
 

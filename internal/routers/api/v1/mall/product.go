@@ -6,7 +6,6 @@ import (
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/app"
-	"superTools-frontground-backend/pkg/convert"
 	"superTools-frontground-backend/pkg/errcode"
 )
 
@@ -74,7 +73,7 @@ func (p ProductController) GetAllProduct(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/products/{id} [get]
 func (p ProductController) GetProduct(c *gin.Context) {
-	param := service.ProductRequest{ID: convert.StrTo(c.Param("id")).MustInt64()}
+	param := service.ProductRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
@@ -166,7 +165,7 @@ func (p ProductController) Update(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/products/{id} [delete]
 func (p ProductController) Delete(c *gin.Context) {
-	param := service.DeleteProductRequest{ID: convert.StrTo(c.Param("id")).MustInt64()}
+	param := service.DeleteProductRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {

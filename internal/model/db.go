@@ -12,6 +12,6 @@ type Model struct {
 	DeletedOn  string `gorm:"column:deleted_on" json:"deleted_on"`
 	ModifiedBy string `gorm:"column:modified_by" json:"modified_by"`
 	ModifiedOn string `gorm:"column:modified_on" json:"modified_on"`
-	ID         uint32 `gorm:"column:id;primary_key" json:"id"`
+	ID         string `gorm:"column:id;primary_key" json:"id"`
 	IsDel      int    `gorm:"column:is_del" json:"is_del"`
 }

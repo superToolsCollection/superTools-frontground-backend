@@ -22,11 +22,11 @@ var (
 )
 
 type ProductRequest struct {
-	ID int64 `form:"id" binding:"required,gte=1"`
+	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
 type InsertProductRequest struct {
-	ID           int64  `form:"id" binding:"required,gte=1"`
+	ID           string `form:"id" binding:"required,min=2,max=100"`
 	ProductName  string `form:"product_name" binding:"required,min=2,max=4294967295"`
 	ProductNum   int64  `form:"product_num" binding:"required,gte=1"`
 	ProductImage string `form:"product_image" binding:"required,min=2,max=1000"`
@@ -34,7 +34,7 @@ type InsertProductRequest struct {
 }
 
 type UpdateProductRequest struct {
-	ID           int64  `form:"id" binding:"required,gte=1"`
+	ID           string `form:"id" binding:"required,min=2,max=100"`
 	ProductName  string `form:"product_name" binding:"required,min=2,max=4294967295"`
 	ProductNum   int64  `form:"product_num" binding:"required,gte=1"`
 	ProductImage string `form:"product_image" binding:"required,min=2,max=1000"`
@@ -42,11 +42,11 @@ type UpdateProductRequest struct {
 }
 
 type DeleteProductRequest struct {
-	ID int64 `form:"id" binding:"required,gte=1"`
+	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
 type Product struct {
-	ID           int64  `json:"id"`
+	ID           string `json:"id"`
 	ProductName  string `json:"ProductName"`
 	ProductNum   int64  `json:"ProductNum"`
 	ProductImage string `json:"ProductImage"`
@@ -58,7 +58,7 @@ func (p *Product) String() string {
 }
 
 type IProductService interface {
-	GetProductByID(int64) (*Product, error)
+	GetProductByID(string) (*Product, error)
 	GetAllProduct() ([]*Product, error)
 	GetProductList(pager *app.Pager) ([]*Product, error)
 	DeleteProductByID(param *DeleteProductRequest) bool
@@ -75,7 +75,7 @@ func NewProductService(productDao dao.IProduct) IProductService {
 	return &ProductService{productDao}
 }
 
-func (p *ProductService) GetProductByID(productID int64) (*Product, error) {
+func (p *ProductService) GetProductByID(productID string) (*Product, error) {
 	product, err := p.productDao.SelectByKey(productID)
 	if err != nil {
 		return nil, err

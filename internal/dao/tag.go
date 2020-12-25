@@ -11,7 +11,7 @@ import (
 * @Description: 用于操作story_tag表
 **/
 
-func (d *Dao) GetTag(id uint32, state uint8) (model.StoryTag, error) {
+func (d *Dao) GetTag(id string, state uint8) (model.StoryTag, error) {
 	tag := model.StoryTag{Model: &model.Model{ID: id}, State: state}
 	return tag.Get(d.engine)
 }
@@ -44,7 +44,7 @@ func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
 	return tag.Create(d.engine)
 }
 
-func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) error {
+func (d *Dao) UpdateTag(id string, name string, state uint8, modifiedBy string) error {
 	tag := model.StoryTag{
 		Model: &model.Model{
 			ID: id,
@@ -61,7 +61,7 @@ func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) 
 	return tag.Update(d.engine, values)
 }
 
-func (d *Dao) DeleteTag(id uint32) error {
+func (d *Dao) DeleteTag(id string) error {
 	tag := model.StoryTag{Model: &model.Model{ID: id}}
 	return tag.Delete(d.engine)
 }

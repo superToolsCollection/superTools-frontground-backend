@@ -14,17 +14,17 @@ import (
 **/
 
 type StoryRequest struct {
-	ID    uint32 `form:"id" binding:"required,gte=1"`
+	ID    string `form:"id" binding:"required,min=2,max=100"`
 	State uint8  `form:"state,default=1" binding:"oneof=0 1"`
 }
 
 type StoryListRequest struct {
-	TagID uint32 `form:"tag_id" binding:"gte=1"`
+	TagID string `form:"tag_id" binding:"required,min=2,max=100"`
 	State uint8  `form:"state,default=1" binding:"oneof=0 1"`
 }
 
 type CreateStoryRequest struct {
-	TagID     uint32 `form:"tag_id" binding:"required,gte=1"`
+	TagID     string `form:"tag_id" binding:"required,min=2,max=100"`
 	Content   string `form:"content" binding:"required,min=2,max=4294967295"`
 	Author    string `form:"author" binding:"required,min=2,max=4294967295"`
 	CreatedBy string `form:"created_by" binding:"required,min=2,max=100"`
@@ -32,19 +32,19 @@ type CreateStoryRequest struct {
 }
 
 type UpdateStoryRequest struct {
-	ID         uint32 `form:"id" binding:"required,gte=1"`
-	TagID      uint32 `form:"tag_id" binding:"required,gte=1"`
+	ID         string `form:"id" binding:"required,min=2,max=100"`
+	TagID      string `form:"tag_id" binding:"required,min=2,max=100"`
 	Content    string `form:"content" binding:"min=2,max=4294967295"`
 	ModifiedBy string `form:"modified_by" binding:"required,min=2,max=100"`
 	State      uint8  `form:"state,default=1" binding:"oneof=0 1"`
 }
 
 type DeleteStoryRequest struct {
-	ID uint32 `form:"id" binding:"required,gte=1"`
+	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
 type Story struct {
-	ID     uint32          `json:"id"`
+	ID     string          `json:"id"`
 	Story  string          `json:"story"`
 	Author string          `json:"author"`
 	State  uint8           `json:"state"`

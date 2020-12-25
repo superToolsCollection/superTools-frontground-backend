@@ -16,7 +16,7 @@ import (
 **/
 
 type Product struct {
-	ID           int64  `json:"id" sql:"ID"`
+	ID           string `json:"id" sql:"ID"`
 	ProductName  string `json:"ProductName"`
 	ProductNum   int64  `json:"ProductNum"`
 	ProductImage string `json:"ProductImage"`
@@ -25,9 +25,9 @@ type Product struct {
 
 type IProduct interface {
 	Insert(product *Product) (int64, error)
-	Delete(id int64) bool
+	Delete(id string) bool
 	Update(product *Product) error
-	SelectByKey(int64) (*model.Product, error)
+	SelectByKey(string) (*model.Product, error)
 	SelectAll() ([]*model.Product, error)
 	SelectList(page, pageSize int) ([]*model.Product, error)
 }
@@ -72,7 +72,7 @@ func (p *ProductManager) Update(product *Product) error {
 	return nil
 }
 
-func (p *ProductManager) Delete(id int64) bool {
+func (p *ProductManager) Delete(id string) bool {
 	result := p.conn.Where("id = ?", id).Delete(model.Product{})
 	if result.RowsAffected == int64(0) {
 		return false
@@ -80,7 +80,7 @@ func (p *ProductManager) Delete(id int64) bool {
 	return true
 }
 
-func (p *ProductManager) SelectByKey(id int64) (*model.Product, error) {
+func (p *ProductManager) SelectByKey(id string) (*model.Product, error) {
 	product := &model.Product{}
 	result := p.conn.Where("id = ?", id).Find(product)
 	if result.RecordNotFound() {

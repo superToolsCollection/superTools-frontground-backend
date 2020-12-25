@@ -4,7 +4,6 @@ import (
 	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/app"
-	"superTools-frontground-backend/pkg/convert"
 	"superTools-frontground-backend/pkg/errcode"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +31,7 @@ func NewStory() Story {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/bedtime/stories/{id} [get]
 func (t Story) Get(c *gin.Context) {
-	param := service.StoryRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	param := service.StoryRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
@@ -62,7 +61,7 @@ func (t Story) Get(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/bedtime/stories_only/{id} [get]
 func (t Story) GetOnly(c *gin.Context) {
-	param := service.StoryRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	param := service.StoryRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
@@ -162,7 +161,7 @@ func (t Story) Create(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/bedtime/stories/{id} [put]
 func (t Story) Update(c *gin.Context) {
-	param := service.UpdateStoryRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	param := service.UpdateStoryRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
@@ -192,7 +191,7 @@ func (t Story) Update(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/bedtime/stories/{id} [delete]
 func (t Story) Delete(c *gin.Context) {
-	param := service.DeleteStoryRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	param := service.DeleteStoryRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
