@@ -16,4 +16,4 @@
 
 .idea
 configs/
-logs/
+storage/

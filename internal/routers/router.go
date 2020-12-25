@@ -2,6 +2,7 @@ package routers
 
 import (
 	"net/http"
+	"superTools-frontground-backend/internal/routers/api/user"
 	"time"
 
 	_ "superTools-frontground-backend/docs"
@@ -13,7 +14,6 @@ import (
 	"superTools-frontground-backend/internal/routers/api/v1/bedtimeStory"
 	"superTools-frontground-backend/internal/routers/api/v1/mall"
 	"superTools-frontground-backend/internal/routers/api/v1/tools"
-	"superTools-frontground-backend/internal/routers/api/v1/user"
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/limiter"
 
@@ -57,6 +57,8 @@ func NewRouter() *gin.Engine {
 
 	//获取token
 	r.GET("/auth", api.GetAuth)
+
+	RegisterController(r, HEALTH, global.DBEngine)
 	RegisterController(r, USER, global.DBEngine)
 
 	upload := api.NewUpload()
