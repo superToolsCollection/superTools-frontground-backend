@@ -1,10 +1,8 @@
 package mq
 
 import (
-	"context"
 	"fmt"
 	"github.com/streadway/amqp"
-	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/pkg/setting"
 	"sync"
 )
@@ -45,14 +43,14 @@ func NewRabbitMQ(queuqName string,
 	//创建rabbitmq连接
 	var err error
 	rabbitmq.conn, err = amqp.Dial(rabbitmq.Mqurl)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	rabbitmq.Channel, err = rabbitmq.conn.Channel()
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
-	return rabbitmq,  nil
+	return rabbitmq, nil
 }
 
 // 断开channel和connection的连接释放资源
@@ -64,7 +62,7 @@ func (r *RabbitMQ) Destory() {
 //自定义错误处理函数
 func (r *RabbitMQ) FailOnErr(err error, message string) {
 	if err != nil {
-		global.Logger.Error(context.Background(), err)
+		//global.Logger.Error(context.Background(), err)
 		panic(fmt.Sprintf("%s:%s", message, err))
 	}
 }

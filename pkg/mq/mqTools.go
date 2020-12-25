@@ -1,9 +1,7 @@
 package mq
 
 import (
-	"context"
 	"github.com/streadway/amqp"
-	"superTools-frontground-backend/global"
 	"superTools-frontground-backend/pkg/setting"
 )
 
@@ -20,7 +18,7 @@ func NewRabbitMQSimple(queueName string, rabbitMQSetting *setting.RabbitMQSettin
 }
 
 // 简单模式：step2 创建简单模式下的生产者
-func (r *RabbitMQ) PublishSimple(message string) {
+func (r *RabbitMQ) PublishSimple(message string) error{
 	r.Lock()
 	defer r.Unlock()
 	//1. 申请队列，如果队列不存在则自动创建，如果存在则获取存在的队列
@@ -38,8 +36,7 @@ func (r *RabbitMQ) PublishSimple(message string) {
 		nil,
 	)
 	if err != nil {
-		global.Logger.Error(context.Background(), err)
-		return
+		return err
 	}
 
 	//2. 发送消息到队列中
@@ -57,12 +54,13 @@ func (r *RabbitMQ) PublishSimple(message string) {
 		},
 	)
 	if err != nil {
-		global.Logger.Error(context.Background(), err)
+		return err
 	}
+	return nil
 }
 
 // 简单模式：step3 创建简单模式下的消费者
-func (r *RabbitMQ) GetMsgs() <-chan amqp.Delivery {
+func (r *RabbitMQ) GetMsgs() (<-chan amqp.Delivery,  error) {
 	//1. 申请队列，如果队列不存在则自动创建，如果存在则获取存在的队列
 	//保证队列存在，使消息发送到队列中
 	_, err := r.Channel.QueueDeclare(r.QueueName,
@@ -78,8 +76,7 @@ func (r *RabbitMQ) GetMsgs() <-chan amqp.Delivery {
 		nil,
 	)
 	if err != nil {
-		global.Logger.Error(context.Background(), err)
-		return nil
+		return nil, err
 	}
 
 	//接受消息
@@ -99,8 +96,7 @@ func (r *RabbitMQ) GetMsgs() <-chan amqp.Delivery {
 		nil,
 	)
 	if err != nil {
-		global.Logger.Error(context.Background(), err)
-		return nil
+		return nil, err
 	}
-	return msgs
+	return msgs, nil
 }

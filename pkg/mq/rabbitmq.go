@@ -6,6 +6,6 @@ package mq
 * @Description: rabbitMQ连接池
 **/
 
-func SendMessage(message string, rabbitMQEngine * RabbitMQ){
-	rabbitMQEngine.PublishSimple(message)
+func SendMessage(message string, rabbitMQEngine *RabbitMQ) error {
+	return rabbitMQEngine.PublishSimple(message)
 }

@@ -49,6 +49,8 @@ func NewRouter() *gin.Engine {
 	}
 	r.Use(middleware.Tracing())
 	r.Use(middleware.RateLimiter(methodLimiters))
+	//放到需要token的请求中
+	//r.Use(middleware.JWT())
 	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout))
 	r.Use(middleware.Translations())
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
