@@ -20,8 +20,8 @@ type Auth struct {
 	ModifiedOn string `json:"modified_on"`
 	ID         string `json:"id"`
 	IsDel      int    `json:"is_del"`
-	AppKey    string `json:"app_key"`
-	AppSecret string `json:"app_secret"`
+	AppKey     string `json:"app_key"`
+	AppSecret  string `json:"app_secret"`
 }
 
 type IAuth interface {
@@ -30,17 +30,17 @@ type IAuth interface {
 
 type AuthManager struct {
 	table string
-	conn *gorm.DB
+	conn  *gorm.DB
 }
 
 func NewAuthManager(table string, conn *gorm.DB) IAuth {
-	return &AuthManager{table:table, conn:conn}
+	return &AuthManager{table: table, conn: conn}
 }
 
 func (a *AuthManager) GetAuth(appKey, appSecret string) (*model.Auth, error) {
 	auth := &model.Auth{}
 	result := a.conn.Where("app_key=? and app_secret=?", appKey, appSecret).Find(auth)
-	if result.RecordNotFound(){
+	if result.RecordNotFound() {
 		return nil, errors.New("wrong appKey or appSecret")
 	}
 	return auth, nil

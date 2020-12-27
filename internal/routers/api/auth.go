@@ -20,7 +20,7 @@ type AuthController struct {
 }
 
 func NewAuthController(authService service.IAuthService) AuthController {
-	return AuthController{AuthService:authService}
+	return AuthController{AuthService: authService}
 }
 
 // @Summary 获得token
@@ -32,7 +32,7 @@ func NewAuthController(authService service.IAuthService) AuthController {
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /auth [get]
-func (a AuthController)GetAuth(c *gin.Context) {
+func (a AuthController) GetAuth(c *gin.Context) {
 	param := service.AuthRequest{}
 	response := app.NewResponse(c)
 	valid, errs := app.BindAndValid(c, &param)

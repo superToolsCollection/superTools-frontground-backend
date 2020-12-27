@@ -17,14 +17,14 @@ type AuthRequest struct {
 }
 
 type Auth struct {
-	ID         string `json:"id"`
-	IsDel      int    `json:"is_del"`
+	ID        string `json:"id"`
+	IsDel     int    `json:"is_del"`
 	AppKey    string `json:"app_key"`
 	AppSecret string `json:"app_secret"`
 }
 
 type IAuthService interface {
-	CheckAuth(param *AuthRequest)(*Auth, error)
+	CheckAuth(param *AuthRequest) (*Auth, error)
 }
 
 type AuthService struct {
@@ -32,7 +32,7 @@ type AuthService struct {
 }
 
 func NewAuthService(authDao dao.IAuth) IAuthService {
-	return &AuthService{authDao:authDao}
+	return &AuthService{authDao: authDao}
 }
 
 func (svc *AuthService) CheckAuth(param *AuthRequest) (*Auth, error) {
@@ -49,9 +49,9 @@ func (svc *AuthService) CheckAuth(param *AuthRequest) (*Auth, error) {
 	}
 
 	return &Auth{
-		ID:auth.ID,
-		IsDel:auth.IsDel,
-		AppKey:auth.AppKey,
-		AppSecret:auth.AppSecret,
+		ID:        auth.ID,
+		IsDel:     auth.IsDel,
+		AppKey:    auth.AppKey,
+		AppSecret: auth.AppSecret,
 	}, nil
 }
