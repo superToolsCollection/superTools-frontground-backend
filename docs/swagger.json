@@ -516,44 +516,44 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "mall"
                 ],
-                "summary": "更新用户信息",
+                "summary": "更新订单",
                 "parameters": [
                     {
-                        "description": "用户id",
+                        "description": "订单id",
                         "name": "id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
-                        "description": "用户名",
-                        "name": "user_name",
+                        "description": "用户id",
+                        "name": "user_id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
-                        "description": "密码",
-                        "name": "password",
+                        "description": "商品id",
+                        "name": "product_id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
-                        "description": "昵称",
-                        "name": "nick_name",
+                        "description": "订单状态",
+                        "name": "state",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -561,7 +561,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/string"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -583,43 +583,52 @@
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "mall"
                 ],
-                "summary": "用户注册",
+                "summary": "新增订单",
                 "parameters": [
                     {
-                        "description": "用户名",
-                        "name": "user_name",
+                        "description": "订单id",
+                        "name": "id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
-                        "description": "密码",
-                        "name": "password",
+                        "description": "用户id",
+                        "name": "user_id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     },
                     {
-                        "description": "昵称",
-                        "name": "nick_name",
+                        "description": "商品id",
+                        "name": "product_id",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "订单状态",
+                        "name": "state",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "userID",
+                        "description": "1",
                         "schema": {
-                            "$ref": "#/definitions/string"
+                            "type": "int"
                         }
                     },
                     "400": {
@@ -857,7 +866,7 @@
                     "200": {
                         "description": "success",
                         "schema": {
-                            "$ref": "#/definitions/string"
+                            "type": "string"
                         }
                     },
                     "400": {
@@ -933,7 +942,7 @@
                     "200": {
                         "description": "1",
                         "schema": {
-                            "$ref": "#/definitions/int"
+                            "type": "int"
                         }
                     },
                     "400": {

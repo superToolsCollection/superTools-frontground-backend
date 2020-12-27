@@ -100,7 +100,7 @@ func (p ProductController) GetProduct(c *gin.Context) {
 // @Param product_num body int true "商品数量"
 // @Param product_image body string true "商品图像"
 // @Param product_url body string true "商品链接"
-// @Success 200 {object} int "1"
+// @Success 200 {int} int "1"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/products [post]
@@ -132,7 +132,7 @@ func (p ProductController) Insert(c *gin.Context) {
 // @Param product_num body int true "商品数量"
 // @Param product_image body string true "商品图像"
 // @Param product_url body string true "商品链接"
-// @Success 200 {object} string "success"
+// @Success 200 {string} string "success"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/products [put]

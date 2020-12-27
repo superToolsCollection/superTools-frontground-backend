@@ -56,7 +56,10 @@ func NewRouter() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//获取token
-	r.GET("/auth", api.GetAuth)
+	authManager := dao.NewAuthManager("auth", global.DBEngine)
+	authService := service.NewAuthService(authManager)
+	authController := api.NewAuthController(authService)
+	r.GET("/auth", authController.GetAuth)
 
 	RegisterController(r, HEALTH, global.DBEngine)
 	RegisterController(r, USER, global.DBEngine)

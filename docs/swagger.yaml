@@ -478,31 +478,37 @@ paths:
       - mall
     post:
       parameters:
-      - description: 用户名
+      - description: 订单id
         in: body
-        name: user_name
+        name: id
         required: true
         schema:
-          type: string
-      - description: 密码
+          type: integer
+      - description: 用户id
         in: body
-        name: password
+        name: user_id
         required: true
         schema:
-          type: string
-      - description: 昵称
+          type: integer
+      - description: 商品id
         in: body
-        name: nick_name
+        name: product_id
         required: true
         schema:
-          type: string
+          type: integer
+      - description: 订单状态
+        in: body
+        name: state
+        required: true
+        schema:
+          type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: userID
+          description: "1"
           schema:
-            $ref: '#/definitions/string'
+            type: int
         "400":
           description: 请求错误
           schema:
@@ -511,42 +517,42 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/errcode.Error'
-      summary: 用户注册
+      summary: 新增订单
       tags:
-      - user
+      - mall
     put:
       parameters:
-      - description: 用户id
+      - description: 订单id
         in: body
         name: id
         required: true
         schema:
-          type: string
-      - description: 用户名
+          type: integer
+      - description: 用户id
         in: body
-        name: user_name
+        name: user_id
         required: true
         schema:
-          type: string
-      - description: 密码
+          type: integer
+      - description: 商品id
         in: body
-        name: password
+        name: product_id
         required: true
         schema:
-          type: string
-      - description: 昵称
+          type: integer
+      - description: 订单状态
         in: body
-        name: nick_name
+        name: state
         required: true
         schema:
-          type: string
+          type: integer
       produces:
       - application/json
       responses:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/string'
+            type: string
         "400":
           description: 请求错误
           schema:
@@ -555,9 +561,9 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/errcode.Error'
-      summary: 更新用户信息
+      summary: 更新订单
       tags:
-      - user
+      - mall
   /api/v1/mall/orders/{id}:
     delete:
       parameters:
@@ -701,7 +707,7 @@ paths:
         "200":
           description: "1"
           schema:
-            $ref: '#/definitions/int'
+            type: int
         "400":
           description: 请求错误
           schema:
@@ -751,7 +757,7 @@ paths:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/string'
+            type: string
         "400":
           description: 请求错误
           schema:

@@ -24,6 +24,7 @@ func NewUpload() Upload {
 }
 
 // @Summary 用于文件上传
+// @tags 文件相关
 // @Produce json
 // @Param file formData file true "文件"
 // @Param type formData int true "文件类型"

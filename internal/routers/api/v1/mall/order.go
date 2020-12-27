@@ -162,7 +162,7 @@ func (o OrderController) GetOrder(c *gin.Context) {
 // @Param user_id body int true "用户id"
 // @Param product_id body int true "商品id"
 // @Param state body int true "订单状态"
-// @Success 200 {object} int "1"
+// @Success 200 {int} int "1"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/orders [post]
@@ -205,7 +205,7 @@ func (o OrderController) Insert(c *gin.Context) {
 // @Param user_id body int true "用户id"
 // @Param product_id body int true "商品id"
 // @Param state body int true "订单状态"
-// @Success 200 {object} string "success"
+// @Success 200 {string} string "success"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/mall/orders [put]
