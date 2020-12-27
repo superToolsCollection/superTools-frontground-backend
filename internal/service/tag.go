@@ -11,6 +11,11 @@ import (
 * @Description: tag相关内容入参验证与service代码
 **/
 
+type Tag struct {
+	Name  string `gorm:"column:name" json:"name"`
+	State uint8  `gorm:"column:state" json:"state"`
+}
+
 type CountTagRequest struct {
 	Name  string `form:"name" binding:"max=100"`
 	State uint8  `form:"state,default=1" binding:"oneof=0 1"`

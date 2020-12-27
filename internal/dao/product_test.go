@@ -29,7 +29,7 @@ func TestProductManager_Insert(t *testing.T) {
 	}
 	productManager := NewProductManager("products", conn)
 	product := &Product{
-		ID:          2,
+		ID:          string(2),
 		ProductName: "test",
 		ProductNum:  12,
 		ProductUrl:  "111",
@@ -56,7 +56,7 @@ func TestProductManager_SelectByKey(t *testing.T) {
 	}
 	productManager := NewProductManager("products", conn)
 
-	product, err := productManager.SelectByKey(1)
+	product, err := productManager.SelectByKey(string(1))
 	if err != nil {
 		t.Error(err)
 	}

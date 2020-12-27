@@ -1,9 +1,7 @@
 package dao
 
 import (
-	"errors"
 	"github.com/jinzhu/gorm"
-	"superTools-frontground-backend/internal/model"
 )
 
 /**
@@ -35,15 +33,11 @@ func NewStoryManager(table string, conn *gorm.DB) IStory {
 
 //从数据库中随机选择一条数据返回
 func (m *StoryManager) SelectStory() (*Story, error) {
-	story := &model.Story{}
-	result := m.conn.Where().Find(story)
-	if result.RecordNotFound() {
-		return nil, errors.New("get story error")
+	result := m.conn.Raw(`SELECT s1.id AS id, s1.author AS author, s1.story AS story, s1.state as state FROM stories AS s1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM stories) - (SELECT MIN(id) FROM stories)) + (SELECT MIN(id) FROM stories)) AS id) AS s2 ON s1.id >= s2.id LIMIT 1;`).Row()
+	story := &Story{}
+	err := result.Scan(&story.ID, &story.Author, &story.Story, &story.State)
+	if err != nil {
+		return nil, err
 	}
-	return &Story{
-		ID:     story.ID,
-		Story:  story.Story,
-		Author: story.Author,
-		State:  story.State,
-	}, nil
+	return story, nil
 }
