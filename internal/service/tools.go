@@ -109,7 +109,7 @@ func (s *ToolService) GetToolList(pager *app.Pager) ([]*Tool, error) {
 	return toolList, nil
 }
 
-func (s *ToolService) GetAllTools()([]*Tool, error){
+func (s *ToolService) GetAllTools() ([]*Tool, error) {
 	tools, err := s.toolDao.SelectAll()
 	if err != nil {
 		return nil, err
