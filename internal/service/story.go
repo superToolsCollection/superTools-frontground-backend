@@ -13,7 +13,7 @@ type Story struct {
 	Story  string `json:"story"`
 	Author string `json:"author"`
 	State  uint8  `json:"state"`
-	Tag    *Tag   `json:"tag"`
+	Tag    []*Tag   `json:"tags"`
 }
 
 type IStoryService interface {

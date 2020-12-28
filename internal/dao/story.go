@@ -12,7 +12,6 @@ import (
 
 type Story struct {
 	ID     string `json:"id"`
-	TagID  string `json:"tag_id"`
 	Story  string `json:"story"`
 	Author string `json:"author"`
 	State  uint8  `json:"state"`
