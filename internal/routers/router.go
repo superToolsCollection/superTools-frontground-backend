@@ -65,6 +65,7 @@ func NewRouter() *gin.Engine {
 	RegisterController(r, USER, global.DBEngine)
 	RegisterController(r, TOOLS, global.DBEngine)
 	RegisterController(r, BEDTIME, global.DBEngine)
+	RegisterController(r, TAG, global.DBEngine)
 
 	upload := api.NewUpload()
 	r.POST("/upload/file", upload.UploadFile)
@@ -94,6 +95,8 @@ func RegisterController(r *gin.Engine, name string, db *gorm.DB) {
 		registerBedtime(r, db)
 	case HEALTH:
 		registerHealth(r, db)
+	case TAG:
+		registerTag(r, db)
 	}
 }
 
@@ -112,17 +115,23 @@ func registerBedtime(r *gin.Engine, db *gorm.DB) {
 	storyManager := dao.NewStoryManager("stories", db)
 	storyService := service.NewStoryService(storyManager)
 	storyController := bedtimeStory.NewStoryController(storyService)
-	tag := bedtimeStory.NewTag()
 	bedtime := r.Group("/api/v1/bedtime")
 	//bedtime.Use(middleware.JWT())
 	{
-		bedtime.POST("/tags", tag.Create)
-		bedtime.DELETE("/tags/:id", tag.Delete)
-		bedtime.PUT("/tags/:id", tag.Update)
-		bedtime.PATCH("/tags/:id/state", tag.Update)
-		bedtime.GET("/tags", tag.List)
-
 		bedtime.GET("/story", storyController.Get)
+	}
+}
+
+func registerTag(r *gin.Engine, db *gorm.DB) {
+	tagManager := dao.NewTagManager("tags", db)
+	tagService := service.NewTagServcice(tagManager)
+	tagController := bedtimeStory.NewTagController(tagService)
+
+	bedtime := r.Group("/api/v1/tag")
+	//bedtime.Use(middleware.JWT())
+	{
+		bedtime.GET("/getTag", tagController.GetTag)
+		bedtime.GET("/getTags", tagController.GetTags)
 	}
 }
 

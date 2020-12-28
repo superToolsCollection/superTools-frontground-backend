@@ -20,7 +20,7 @@ type Tag struct {
 
 type ITag interface {
 	SelectByID(id string) (Tag, error)
-	SelectByIDs(id []string)([]Tag, error)
+	SelectByIDs(id []string) ([]Tag, error)
 }
 
 type TagManager struct {
@@ -45,18 +45,18 @@ func (m *TagManager) SelectByID(id string) (Tag, error) {
 	}, nil
 }
 
-func (m *TagManager) SelectByIDs(ids []string)([]Tag, error){
+func (m *TagManager) SelectByIDs(ids []string) ([]Tag, error) {
 	var tags []*model.Tag
 	result := m.conn.Where("id in (?)", ids).Find(&tags)
 	if result.RecordNotFound() {
 		return nil, errors.New("select tags by id error")
 	}
 	t := make([]Tag, 0)
-	for _, tag := range tags{
+	for _, tag := range tags {
 		temp := Tag{
-			ID:tag.ID,
-			Name:tag.Name,
-			State:tag.State,
+			ID:    tag.ID,
+			Name:  tag.Name,
+			State: tag.State,
 		}
 		t = append(t, temp)
 	}
@@ -64,7 +64,6 @@ func (m *TagManager) SelectByIDs(ids []string)([]Tag, error){
 	return t, nil
 }
 
-
-func (t Tag) String()string{
+func (t Tag) String() string {
 	return fmt.Sprintf("id: %s, name: %s, state:%d\n", t.ID, t.Name, t.State)
 }

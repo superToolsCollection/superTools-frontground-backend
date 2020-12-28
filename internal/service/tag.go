@@ -11,7 +11,7 @@ import (
 * @Description: tag相关内容入参验证与service代码
 **/
 type SelectTagRequest struct {
-	ID string `form:"id" binding:"required,min=2,max=100"`
+	ID string `form:"id" binding:"required"`
 }
 
 type SelectTagsRequest struct {
@@ -26,7 +26,7 @@ type Tag struct {
 
 type ITagService interface {
 	GetTag(param *SelectTagRequest) (*Tag, error)
-	GetTags(param *SelectTagsRequest)([]*Tag, error)
+	GetTags(param *SelectTagsRequest) ([]*Tag, error)
 }
 
 type TagService struct {
@@ -49,15 +49,20 @@ func (s *TagService) GetTag(param *SelectTagRequest) (*Tag, error) {
 	}, nil
 }
 
-func (s *TagService) GetTags(param *SelectTagsRequest) ([]*Tag, error){
+func (s *TagService) GetTags(param *SelectTagsRequest) ([]*Tag, error) {
+	//todo:确认传递参数
 	ids := strings.Split(strings.TrimSpace(param.IDs), ",")
 	result, err := s.tagDao.SelectByIDs(ids)
 	if err != nil {
 		return nil, err
 	}
-	return &Tag{
-		ID:    result.ID,
-		Name:  result.Name,
-		State: result.State,
-	}, nil
+	tags := make([]*Tag, len(result))
+	for i, r := range result {
+		tags[i] = &Tag{
+			ID:    r.ID,
+			Name:  r.Name,
+			State: r.State,
+		}
+	}
+	return tags, nil
 }

@@ -32,7 +32,7 @@ func TestTagManager_SelectByIDs(t *testing.T) {
 
 	ids := []string{"1", "2", "3", "4"}
 	result, err := tagManager.SelectByIDs(ids)
-	if err != nil{
+	if err != nil {
 		t.Log(err)
 	}
 	fmt.Println(result)

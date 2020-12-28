@@ -13,4 +13,5 @@ const (
 	USER    = "users"
 	BEDTIME = "bedtime"
 	HEALTH  = "health"
+	TAG     = "tag"
 )
