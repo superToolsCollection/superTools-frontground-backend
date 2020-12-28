@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"errors"
+	"github.com/jinzhu/gorm"
 	"superTools-frontground-backend/internal/model"
 )
 
@@ -9,44 +11,48 @@ import (
 * @Date: 2020-09-22 14:14
 * @Description: 用于操作story_tag_map表
 **/
-
-func (d *Dao) GetStoryTagByAID(storyID string) (model.StoryTagMap, error) {
-	articleTag := model.StoryTagMap{StoryID: storyID}
-	return articleTag.GetByAID(d.engine)
+type IStoryTag interface {
+	SelectTagIDsByStoryID(id string) ([]string, error)
+	SelectStoryIDsByTagID(id string) ([]string, error)
 }
 
-func (d *Dao) GetStoryTagListByTID(tagID string) ([]*model.StoryTagMap, error) {
-	articleTag := model.StoryTagMap{TagID: tagID}
-	return articleTag.ListByTID(d.engine)
+type StoryTagManager struct {
+	table string
+	conn  *gorm.DB
 }
 
-func (d *Dao) GetStoryTagListByAIDs(articleIDs []uint32) ([]*model.StoryTagMap, error) {
-	articleTag := model.StoryTagMap{}
-	return articleTag.ListByAIDs(d.engine, articleIDs)
+func NewStoryTagManager(table string, conn *gorm.DB) IStoryTag {
+	return &StoryTagManager{table: table, conn: conn}
 }
 
-func (d *Dao) CreateStoryTag(storyID, tagID string, createdBy string) error {
-	articleTag := model.StoryTagMap{
-		Model: &model.Model{
-			CreatedBy: createdBy,
-		},
-		StoryID: storyID,
-		TagID:   tagID,
+func (m *StoryTagManager) SelectTagIDsByStoryID(id string) ([]string, error) {
+	var st []*model.StoryTagMap
+	result := m.conn.Where("story_id=?", id).Find(&st)
+	err := result.Error
+	if err != nil {
+		return nil, errors.New("SelectTagIDsByStoryID error")
+	} else if result.RecordNotFound() {
+		return []string{}, nil
 	}
-	return articleTag.Create(d.engine)
-}
-
-func (d *Dao) UpdateStoryTag(storyID, tagID string, modifiedBy string) error {
-	articleTag := model.StoryTagMap{StoryID: storyID}
-	values := map[string]interface{}{
-		"story_id":    storyID,
-		"tag_id":      tagID,
-		"modified_by": modifiedBy,
+	ids := []string{}
+	for _, stm := range st {
+		ids = append(ids, stm.TagID)
 	}
-	return articleTag.UpdateOne(d.engine, values)
+	return ids, nil
 }
 
-func (d *Dao) DeleteStoryTag(storyID string) error {
-	articleTag := model.StoryTagMap{StoryID: storyID}
-	return articleTag.DeleteOne(d.engine)
+func (m *StoryTagManager) SelectStoryIDsByTagID(id string) ([]string, error) {
+	var st []*model.StoryTagMap
+	result := m.conn.Where("tag_id=?", id).Find(&st)
+	err := result.Error
+	if err != nil {
+		return nil, errors.New("SelectStoryIDsByTagID error")
+	} else if result.RecordNotFound() {
+		return []string{}, nil
+	}
+	ids := []string{}
+	for _, stm := range st {
+		ids = append(ids, stm.StoryID)
+	}
+	return ids, nil
 }

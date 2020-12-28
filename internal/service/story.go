@@ -13,7 +13,7 @@ type Story struct {
 	Story  string `json:"story"`
 	Author string `json:"author"`
 	State  uint8  `json:"state"`
-	Tag    []*Tag `json:"tags"`
+	Tags   []*Tag `json:"tags"`
 }
 
 type IStoryService interface {
@@ -21,11 +21,13 @@ type IStoryService interface {
 }
 
 type StoryService struct {
-	storyDao dao.IStory
+	storyDao    dao.IStory
+	tagDao      dao.ITag
+	storyTagDao dao.IStoryTag
 }
 
-func NewStoryService(storyDao dao.IStory) IStoryService {
-	return &StoryService{storyDao: storyDao}
+func NewStoryService(storyDao dao.IStory, tagDao dao.ITag, storyTagDao dao.IStoryTag) IStoryService {
+	return &StoryService{storyDao: storyDao, tagDao: tagDao, storyTagDao: storyTagDao}
 }
 
 func (s *StoryService) GetStory() (*Story, error) {
@@ -33,10 +35,27 @@ func (s *StoryService) GetStory() (*Story, error) {
 	if err != nil {
 		return nil, err
 	}
+	tagIds, err := s.storyTagDao.SelectTagIDsByStoryID(result.ID)
+	if err != nil {
+		return nil, err
+	}
+	daoTags, err := s.tagDao.SelectByIDs(tagIds)
+	if err != nil {
+		return nil, err
+	}
+	tags := make([]*Tag, len(daoTags))
+	for i, t := range daoTags {
+		tags[i] = &Tag{
+			ID:    t.ID,
+			Name:  t.Name,
+			State: t.State,
+		}
+	}
 	return &Story{
 		ID:     result.ID,
 		Story:  result.Story,
 		Author: result.Author,
 		State:  result.State,
+		Tags:   tags,
 	}, nil
 }
