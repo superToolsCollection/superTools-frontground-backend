@@ -47,6 +47,7 @@ func NewRouter() *gin.Engine {
 		r.Use(middleware.AccessLog())
 		r.Use(middleware.Recovery())
 	}
+	r.Use(middleware.AppInfo())
 	r.Use(middleware.Tracing())
 	r.Use(middleware.RateLimiter(methodLimiters))
 	//放到需要token的请求中
