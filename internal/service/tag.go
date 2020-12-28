@@ -1,64 +1,42 @@
 package service
 
-import (
-	"superTools-frontground-backend/internal/model"
-	"superTools-frontground-backend/pkg/app"
-)
+import "superTools-frontground-backend/internal/dao"
 
 /**
 * @Author: super
 * @Date: 2020-09-18 15:00
 * @Description: tag相关内容入参验证与service代码
 **/
-
-type Tag struct {
-	Name  string `gorm:"column:name" json:"name"`
-	State uint8  `gorm:"column:state" json:"state"`
-}
-
-type CountTagRequest struct {
-	Name  string `form:"name" binding:"max=100"`
-	State uint8  `form:"state,default=1" binding:"oneof=0 1"`
-}
-
-type TagListRequest struct {
-	Name  string `form:"name" binding:"max=100"`
-	State uint8  `form:"state,default=1" binding:"oneof=0 1"`
-}
-
-type CreateTagRequest struct {
-	Name      string `form:"name" binding:"required,min=2,max=100"`
-	CreatedBy string `form:"created_by" binding:"required,min=2,max=100"`
-	State     uint8  `form:"state,default=1" binding:"oneof=0 1"`
-}
-
-type UpdateTagRequest struct {
-	ID         string `form:"id" binding:"required,min=2,max=100"`
-	Name       string `form:"name" binding:"max=100"`
-	State      uint8  `form:"state" binding:"oneof=0 1"`
-	ModifiedBy string `form:"modified_by" binding:"required,min=2,max=100"`
-}
-
-type DeleteTagRequest struct {
+type SelectTagRequest struct {
 	ID string `form:"id" binding:"required,min=2,max=100"`
 }
 
-func (svc *Service) CountTag(param *CountTagRequest) (int, error) {
-	return svc.dao.CountTag(param.Name, param.State)
+type Tag struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	State uint8  `json:"state"`
 }
 
-func (svc *Service) GetTagList(param *TagListRequest, pager *app.Pager) ([]*model.StoryTag, error) {
-	return svc.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
+type ITagService interface {
+	GetTag(param *SelectTagRequest) (*Tag, error)
 }
 
-func (svc *Service) CreateTag(param *CreateTagRequest) error {
-	return svc.dao.CreateTag(param.Name, param.State, param.CreatedBy)
+type TagService struct {
+	tagDao dao.ITag
 }
 
-func (svc *Service) UpdateTag(param *UpdateTagRequest) error {
-	return svc.dao.UpdateTag(param.ID, param.Name, param.State, param.ModifiedBy)
+func NewTagServcice(tagDao dao.ITag) ITagService {
+	return &TagService{tagDao: tagDao}
 }
 
-func (svc *Service) DeleteTag(param *DeleteTagRequest) error {
-	return svc.dao.DeleteTag(param.ID)
+func (s *TagService) GetTag(param *SelectTagRequest) (*Tag, error) {
+	result, err := s.tagDao.SelectByID(param.ID)
+	if err != nil {
+		return nil, err
+	}
+	return &Tag{
+		ID:    result.ID,
+		Name:  result.Name,
+		State: result.State,
+	}, nil
 }

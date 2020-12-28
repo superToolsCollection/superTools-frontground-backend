@@ -20,7 +20,7 @@ type StoryController struct {
 }
 
 func NewStoryController(storyService service.IStoryService) StoryController {
-	return StoryController{StoryService:storyService}
+	return StoryController{StoryService: storyService}
 }
 
 // @Summary 随机获取单个故事
