@@ -49,7 +49,7 @@ func TestConsume(t *testing.T) {
 	msgs, err := Consume("test.oss")
 	forever := make(chan bool)
 	go func() {
-		for d := range msgs{
+		for d := range msgs {
 			fmt.Println(d.Body)
 			//实现其他的逻辑函数
 		}

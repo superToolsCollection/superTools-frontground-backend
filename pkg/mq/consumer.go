@@ -46,7 +46,7 @@ func Consume(queueName string) (<-chan amqp.Delivery, error) {
 		false,
 		nil,
 	)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return msgs, nil
