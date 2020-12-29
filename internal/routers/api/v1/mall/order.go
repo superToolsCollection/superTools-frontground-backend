@@ -193,7 +193,7 @@ func (o OrderController) Insert(c *gin.Context) {
 		response.ToErrorResponse(errcode.ErrorInsertOrderFail)
 		return
 	}
-	mq.SendMessage(string(messageJson), global.RabbitMQEngine)
+	mq.Publish("qqq", messageJson)
 
 	return
 }

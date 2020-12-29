@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"superTools-frontground-backend/pkg/elastic"
 	"superTools-frontground-backend/pkg/mq"
 	"time"
 
@@ -66,11 +67,17 @@ func init() {
 	if err != nil {
 		log.Printf("init setupRabbitMQEngine err: %v\n", err)
 	}
+	//初始化elastic
+	//err = setupElasticEngine()
+	//if err != nil {
+	//	log.Printf("init setupElasticEngine err: %v\n", err)
+	//}
 	//初始化追踪
 	err = setupTracer()
 	if err != nil {
 		log.Printf("init.setupTracer err: %v\n", err)
 	}
+	//初始化ID生成器
 	err = idGenerator.InitSnowflake()
 	if err != nil {
 		log.Printf("init.snowflak err: %v\n", err)
@@ -156,6 +163,10 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
+	err = newSetting.ReadSection("Elastic", &global.ElasticSetting)
+	if err != nil {
+		return err
+	}
 	err = newSetting.ReadSection("JWT", &global.JWTSetting)
 	if err != nil {
 		return err
@@ -200,7 +211,16 @@ func setupCacheEngine() error {
 
 func setupRabbitMQEngine() error {
 	var err error
-	global.RabbitMQEngine, err = mq.NewRabbitMQSimple("", global.RabbitMQSetting)
+	global.RabbitMQEngine, err = mq.NewRabbitMQEngine(global.RabbitMQSetting)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func setupElasticEngine() error {
+	var err error
+	global.ElasticEngine, err = elastic.NewElasticEngine(global.ElasticSetting)
 	if err != nil {
 		return err
 	}

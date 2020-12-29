@@ -13,8 +13,7 @@ import (
 * @Description:
 **/
 
-
-func NewElasticRngine(elasticSetting *setting.ElasticSettingS) (*elastic.Client, error) {
+func NewElasticEngine(elasticSetting *setting.ElasticSettingS) (*elastic.Client, error) {
 	var client *elastic.Client
 	for i := 0; i < 10; i++ {
 		// Ping the server by sending a GET request to `/health`.
@@ -22,7 +21,7 @@ func NewElasticRngine(elasticSetting *setting.ElasticSettingS) (*elastic.Client,
 		client, err = elastic.NewClient(
 			elastic.SetURL(elasticSetting.Url),
 			elastic.SetSniff(false))
-		if err == nil{
+		if err == nil {
 			return nil, err
 		}
 		time.Sleep(time.Second)

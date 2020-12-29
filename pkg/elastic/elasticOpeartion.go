@@ -35,12 +35,12 @@ func IndexExist(index string) (bool, error) {
 	client := global.ElasticEngine
 
 	exist, err := client.IndexExists(index).Do(context.Background())
-	if err != nil{
+	if err != nil {
 		return exist, err
 	}
-	if !exist{
+	if !exist {
 		_, err := client.CreateIndex(index).BodyString(Mapping).Do(context.Background())
-		if err != nil{
+		if err != nil {
 			return false, err
 		}
 	}
@@ -48,7 +48,7 @@ func IndexExist(index string) (bool, error) {
 }
 
 //保存信息
-func SaveInfo(table string, data interface{}) (string, error){
+func SaveInfo(table string, data interface{}) (string, error) {
 	client := global.ElasticEngine
 	// https://www.letianbiji.com/elasticsearch/es7-quick-start.html
 	// 在v7中Type被注释
@@ -56,7 +56,7 @@ func SaveInfo(table string, data interface{}) (string, error){
 	// Index 对应 MySQL 中的 Table
 	// Document 对应 MySQL 中表的记录。
 	response, err := client.Index().Index(table).BodyJson(data).Do(context.Background())
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	return response.Id, nil

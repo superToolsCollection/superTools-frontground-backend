@@ -47,7 +47,7 @@ func BenchmarkAddElementToSet(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
-	for i := 0;i<b.N; i++{
+	for i := 0; i < b.N; i++ {
 		_, err := AddElementToSet("hello", "1")
 		if err != nil {
 			b.Error(err)

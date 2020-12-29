@@ -74,7 +74,7 @@ type RabbitMQSettingS struct {
 }
 
 type ElasticSettingS struct {
-	Url string
+	Url   string
 	Index string
 }
 

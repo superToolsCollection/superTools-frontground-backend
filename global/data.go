@@ -4,7 +4,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/olivere/elastic/v7"
-	"superTools-frontground-backend/pkg/mq"
+	"github.com/streadway/amqp"
 )
 
 /**
@@ -13,9 +13,14 @@ import (
 * @Description: 全局配置DB
 **/
 
+type RabbitMQ struct {
+	Conn    *amqp.Connection
+	Channel *amqp.Channel
+}
+
 var (
 	DBEngine       *gorm.DB
 	RedisEngine    *redis.Pool
-	RabbitMQEngine *mq.RabbitMQ
-	ElasticEngine *elastic.Client
+	RabbitMQEngine *RabbitMQ
+	ElasticEngine  *elastic.Client
 )

@@ -17,6 +17,7 @@ var (
 	DatabaseSetting *setting.DatabaseSettingS
 	CacheSetting    *setting.CacheSettingS
 	RabbitMQSetting *setting.RabbitMQSettingS
+	ElasticSetting  *setting.ElasticSettingS
 	EmailSetting    *setting.EmailSettingS
 	JWTSetting      *setting.JWTSettingS
 	Logger          *logger.Logger
