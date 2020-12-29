@@ -15,7 +15,7 @@ import (
 **/
 
 func TestProductManager_Insert(t *testing.T) {
-	newSetting, err := setting.NewSetting(strings.Split("/Users/super/develop/superTools-backend/configs", ",")...)
+	newSetting, err := setting.NewSetting(strings.Split("/Users/super/develop/superTools-frontground-backend/configs", ",")...)
 	if err != nil {
 		t.Error(err)
 	}

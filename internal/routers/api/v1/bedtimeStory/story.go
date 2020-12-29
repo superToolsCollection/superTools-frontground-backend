@@ -26,7 +26,7 @@ func NewStoryController(storyService service.IStoryService) StoryController {
 // @Summary 随机获取单个故事
 // @tags 睡前故事
 // @Produce json
-// @Success 200 {object} model.BedtimeStory "成功"
+// @Success 200 {object} model.Story "成功"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/bedtime/story [get]

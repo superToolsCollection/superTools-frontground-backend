@@ -83,10 +83,10 @@ func (u UserController) SignIn(c *gin.Context) {
 // @Param user_name body string true "用户名"
 // @Param password body string true "密码"
 // @Param nick_name body string true "昵称"
-// @Success 200 {object} string "success"
+// @Success 200 {string} string "success"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
-// @Router /api/v1/mall/orders [put]
+// @Router /user/update [put]
 func (u UserController) Update(c *gin.Context) {
 	param := service.UserUpdateInfoRequest{}
 	response := app.NewResponse(c)
@@ -113,10 +113,10 @@ func (u UserController) Update(c *gin.Context) {
 // @Param user_name body string true "用户名"
 // @Param password body string true "密码"
 // @Param nick_name body string true "昵称"
-// @Success 200 {object} string "userID"
+// @Success 200 {string} string "userID"
 // @Failure 400 {object} errcode.Error "请求错误"
 // @Failure 500 {object} errcode.Error "内部错误"
-// @Router /api/v1/mall/orders [post]
+// @Router /user/register [post]
 func (u UserController) Register(c *gin.Context) {
 	param := service.UserRegisterRequest{}
 	response := app.NewResponse(c)

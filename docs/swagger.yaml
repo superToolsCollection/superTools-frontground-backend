@@ -22,7 +22,7 @@ definitions:
       msg:
         type: string
     type: object
-  model.BedtimeStory:
+  model.Story:
     properties:
       author:
         type: string
@@ -45,17 +45,7 @@ definitions:
       story:
         type: string
     type: object
-  model.BedtimeStorySwagger:
-    properties:
-      list:
-        items:
-          $ref: '#/definitions/model.BedtimeStory'
-        type: array
-      pager:
-        $ref: '#/definitions/app.Pager'
-        type: object
-    type: object
-  model.StoryTag:
+  model.Tag:
     properties:
       created_by:
         type: string
@@ -80,7 +70,7 @@ definitions:
     properties:
       list:
         items:
-          $ref: '#/definitions/model.StoryTag'
+          $ref: '#/definitions/model.Tag'
         type: array
       pager:
         $ref: '#/definitions/app.Pager'
@@ -149,32 +139,15 @@ info:
   title: superTools前端后台
   version: "1.0"
 paths:
-  /api/v1/bedtime/stories:
+  /api/v1/bedtime/story:
     get:
-      parameters:
-      - description: 标签ID
-        in: query
-        name: tag_id
-        type: integer
-      - description: 状态
-        in: query
-        name: state
-        type: integer
-      - description: 页码
-        in: query
-        name: page
-        type: integer
-      - description: 每页数量
-        in: query
-        name: page_size
-        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/model.BedtimeStorySwagger'
+            $ref: '#/definitions/model.Story'
         "400":
           description: 请求错误
           schema:
@@ -183,169 +156,7 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/errcode.Error'
-      summary: 获取多个故事
-      tags:
-      - 睡前故事
-    post:
-      parameters:
-      - description: 标签ID
-        in: body
-        name: tag_id
-        required: true
-        schema:
-          type: string
-      - description: 故事内容
-        in: body
-        name: content
-        required: true
-        schema:
-          type: string
-      - description: 作者
-        in: body
-        name: author
-        required: true
-        schema:
-          type: string
-      - description: 创建者
-        in: body
-        name: created_by
-        required: true
-        schema:
-          type: integer
-      - description: 状态
-        in: body
-        name: state
-        schema:
-          type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.BedtimeStory'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 创建故事
-      tags:
-      - 睡前故事
-  /api/v1/bedtime/stories/{id}:
-    delete:
-      parameters:
-      - description: 故事ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            type: string
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 删除故事
-      tags:
-      - 睡前故事
-    get:
-      parameters:
-      - description: 故事ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.BedtimeStory'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 获取单个故事
-      tags:
-      - 睡前故事
-    put:
-      parameters:
-      - description: 标签ID
-        in: body
-        name: tag_id
-        schema:
-          type: string
-      - description: 故事内容
-        in: body
-        name: content
-        schema:
-          type: string
-      - description: 修改者
-        in: body
-        name: modified_by
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.BedtimeStory'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 更新故事
-      tags:
-      - 睡前故事
-  /api/v1/bedtime/stories_only/{id}:
-    get:
-      parameters:
-      - description: 故事ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.BedtimeStory'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 仅获得单个故事的内容和作者
+      summary: 随机获取单个故事
       tags:
       - 睡前故事
   /api/v1/mall/GetGenerateHtml:
@@ -874,30 +685,13 @@ paths:
       summary: 根据传递的字符串生成二维码字节的base64编码
       tags:
       - tool
-  /api/v1/tags:
+  /api/v1/tag/{id}:
     get:
       parameters:
-      - description: 标签名称
+      - description: 标签id
         in: query
-        maxLength: 100
-        name: name
+        name: id
         type: string
-      - default: 1
-        description: 状态
-        enum:
-        - 0
-        - 1
-        in: query
-        name: state
-        type: integer
-      - description: 页码
-        in: query
-        name: page
-        type: integer
-      - description: 每页数量
-        in: query
-        name: page_size
-        type: integer
       produces:
       - application/json
       responses:
@@ -913,68 +707,23 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/errcode.Error'
-      summary: 获取多个标签
+      summary: 根据ID获取标签
       tags:
       - 睡前故事
-    post:
+  /api/v1/tags:
+    get:
       parameters:
-      - description: 标签名称
-        in: body
-        maxLength: 100
-        minLength: 3
-        name: name
-        required: true
-        schema:
-          type: string
-      - default: 1
-        description: 状态
-        enum:
-        - 0
-        - 1
-        in: body
-        name: state
-        schema:
-          type: integer
-      - description: 创建者
-        in: body
-        maxLength: 100
-        minLength: 3
-        name: created_by
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.StoryTag'
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 新增标签
-      tags:
-      - 睡前故事
-  /api/v1/tags/{id}:
-    delete:
-      parameters:
-      - description: 标签ID
-        in: path
+      - description: 标签id
+        in: query
         name: id
-        required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: 成功
           schema:
-            type: string
+            $ref: '#/definitions/model.TagSwagger'
         "400":
           description: 请求错误
           schema:
@@ -983,58 +732,7 @@ paths:
           description: 内部错误
           schema:
             $ref: '#/definitions/errcode.Error'
-      summary: 删除标签
-      tags:
-      - 睡前故事
-    put:
-      parameters:
-      - description: 标签ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 标签名称
-        in: body
-        maxLength: 100
-        minLength: 3
-        name: name
-        schema:
-          type: string
-      - default: 1
-        description: 状态
-        enum:
-        - 0
-        - 1
-        in: body
-        name: state
-        schema:
-          type: integer
-      - description: 修改者
-        in: body
-        maxLength: 100
-        minLength: 3
-        name: modified_by
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            items:
-              $ref: '#/definitions/model.StoryTag'
-            type: array
-        "400":
-          description: 请求错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-        "500":
-          description: 内部错误
-          schema:
-            $ref: '#/definitions/errcode.Error'
-      summary: 更新标签
+      summary: 根据ID获取多个标签
       tags:
       - 睡前故事
   /api/v1/tools/allTools:
@@ -1202,6 +900,8 @@ paths:
           schema:
             $ref: '#/definitions/errcode.Error'
       summary: 获得token
+      tags:
+      - auth
   /upload/file:
     post:
       parameters:
@@ -1231,4 +931,90 @@ paths:
           schema:
             $ref: '#/definitions/errcode.Error'
       summary: 用于文件上传
+      tags:
+      - 文件相关
+  /user/register:
+    post:
+      parameters:
+      - description: 用户名
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 昵称
+        in: body
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: userID
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 用户注册
+      tags:
+      - user
+  /user/update:
+    put:
+      parameters:
+      - description: 用户id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 用户名
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 昵称
+        in: body
+        name: nick_name
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新用户信息
+      tags:
+      - user
 swagger: "2.0"
