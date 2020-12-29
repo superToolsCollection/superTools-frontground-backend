@@ -17,7 +17,8 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/juju/ratelimit v1.0.1
 	github.com/lib/pq v1.3.0 // indirect
-	github.com/opentracing/opentracing-go v1.1.0
+	github.com/olivere/elastic/v7 v7.0.22
+	github.com/opentracing/opentracing-go v1.2.0
 	github.com/shirou/gopsutil v0.0.0-20190901111213-e4ec7b275ada
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/spf13/viper v1.7.1
@@ -26,7 +27,7 @@ require (
 	github.com/swaggo/swag v1.5.1
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
-	go.uber.org/zap v1.15.0
+	go.uber.org/atomic v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
