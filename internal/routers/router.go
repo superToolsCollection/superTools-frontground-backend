@@ -79,6 +79,15 @@ func NewRouter() *gin.Engine {
 		tool.GET("/rgb2hex", tools.RgbToHex)
 	}
 
+	forbesManager := dao.NewForbesManager("forbes_list", global.DBEngine)
+	forbesService := service.NewForbesService(forbesManager)
+	forbesController := tools.NewForbesController(forbesService)
+	forbes := r.Group("api/v1/forbes")
+	{
+		forbes.GET("/all", forbesController.GetForbes)
+		forbes.GET("/list", forbesController.GetForbesList)
+	}
+
 	return r
 }
 
@@ -186,8 +195,8 @@ func registerProduct(r *gin.Engine, db *gorm.DB) {
 }
 
 func registerTools(r *gin.Engine, db *gorm.DB) {
-	toolproductManager := dao.NewToolManager("tools", db)
-	toolService := service.NewToolService(toolproductManager)
+	toolManager := dao.NewToolManager("tools", db)
+	toolService := service.NewToolService(toolManager)
 	toolController := tools.NewToolController(toolService)
 
 	g := r.Group("/tools")
