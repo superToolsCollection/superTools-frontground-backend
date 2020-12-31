@@ -42,6 +42,11 @@ func getMessage(sourceMQ string, funcParser *worker.FuncParser, isStorage bool) 
 	}
 	var wg sync.WaitGroup
 	for d := range messages {
+		//如果为true则表示确认所有未确认的消息，为false则表示确定当前消息
+		err := d.Ack(false)
+		if err != nil{
+			global.Logger.Error(context.Background(), err)
+		}
 		if string(d.Body) == crawerConfig.StopTAG {
 			break
 		} else {

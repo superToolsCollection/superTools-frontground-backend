@@ -38,7 +38,7 @@ func Consume(queueName string) (<-chan amqp.Delivery, error) {
 		//是否自动应答，也就是消费者消费一个队列后是否主动告知rabbitmq当前的消息我已经消费完
 		//rabbitmq会根据这个判断是否可以删除该消息
 		//为false的话要手动实现
-		true,
+		false,
 		//是否具有排他性
 		false,
 		//如果为true不能在同一个connection中发送消息传递给当前conn的消费者

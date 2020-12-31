@@ -127,6 +127,7 @@ func registerBedtime(r *gin.Engine, db *gorm.DB) {
 	storyTagManager := dao.NewStoryTagManager("story_tag_map", db)
 	storyService := service.NewStoryService(storyManager, tagManager, storyTagManager)
 	storyController := bedtimeStory.NewStoryController(storyService)
+
 	bedtime := r.Group("/api/v1/bedtime")
 	//bedtime.Use(middleware.JWT())
 	{

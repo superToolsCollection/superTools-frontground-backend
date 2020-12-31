@@ -7,7 +7,7 @@ import "superTools-frontground-backend/internal/crawler/fetcher"
 * @Date: 2020-08-16 07:55
 * @Description:
 **/
-func Worker(r Request) {
+func Worker(r Request) ([]string, error){
 	contents, _ := fetcher.Fetch(r.Url)
-	r.Parser.Parse(contents, r.Url)
+	return r.Parser.Parse(contents, r.Url)
 }

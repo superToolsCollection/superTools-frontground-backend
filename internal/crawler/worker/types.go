@@ -6,14 +6,15 @@ package worker
 * @Description:
 **/
 
-type ParserFunc func(contents []byte, queueName string, url string)
+type ParserFunc func(contents []byte, queueName string, url string) ([]string, error)
 
 type Parser interface {
-	Parse(contents []byte, url string)
+	Parse(contents []byte, url string) ([]string, error)
 }
 
 type Request struct {
 	Url    string
+	Patten string
 	Parser Parser
 }
 
@@ -23,8 +24,8 @@ type FuncParser struct {
 	Name      string
 }
 
-func (f *FuncParser) Parse(contents []byte, url string) {
-	f.parser(contents, f.QueueName, url)
+func (f *FuncParser) Parse(contents []byte, url string) ([]string, error){
+	return f.parser(contents, f.QueueName, url)
 }
 
 func NewFuncParser(p ParserFunc, mqName string, name string) *FuncParser {
