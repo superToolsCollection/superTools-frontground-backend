@@ -17,6 +17,7 @@ import (
 	"superTools-frontground-backend/internal/service"
 	"superTools-frontground-backend/pkg/limiter"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -40,6 +41,7 @@ var methodLimiters = limiter.NewMethodLimiter().AddBuckets(
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
+	r.Use(cors.Default())
 	if global.ServerSetting.RunMode == "debug" {
 		r.Use(gin.Logger())
 		r.Use(gin.Recovery())

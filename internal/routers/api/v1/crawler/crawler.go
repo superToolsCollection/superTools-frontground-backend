@@ -7,6 +7,7 @@ import (
 	"superTools-frontground-backend/pkg/app"
 	"superTools-frontground-backend/pkg/errcode"
 )
+
 type CrawlController struct {
 	ForbesService service.IForbesService
 }
@@ -14,7 +15,6 @@ type CrawlController struct {
 func NewForbesController(forbesService service.IForbesService) ForbesController {
 	return ForbesController{ForbesService: forbesService}
 }
-
 
 /**
 * @Author: super
